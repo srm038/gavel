@@ -1,7 +1,7 @@
-export const processMinutes = async (markdown: string) => {
-  
-}
+import { processMinutes, saveTex } from "./processMinutes";
 
-const markdown = process.argv[2]
+const minutes = process.argv[2];
 
-processMinutes(markdown)
+let tex = await processMinutes(minutes);
+
+await saveTex(minutes, tex);
