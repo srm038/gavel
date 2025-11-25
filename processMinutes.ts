@@ -1,4 +1,4 @@
-import { YAML } from "bun";
+import { SHA512_256, YAML } from "bun";
 import { format } from "date-fns";
 import { remark } from "remark";
 import remarkFrontmatter from "remark-frontmatter";
@@ -48,17 +48,28 @@ export const processMinutes = async ({
     case "yaml": {
       const data = getMetadata({ markdown });
       console.log(data);
+      tex = `${tex}\\begin{multicols}{3}`;
       for (const attendee of [...data.present, ...(data?.absent || [])].sort(
         (a, b) => a.split(" ")[1]!.localeCompare(b.split(" ")[1]!),
       )) {
-        tex = `${tex}${attendee} (${data.present.includes(attendee) ? "present" : "absent"})\n\n`;
+        tex = `${tex}${attendee} (${data.present.includes(attendee) ? "present" : "absent"})\\\\`;
       }
-      return tex;
+      return `${tex}\\end{multicols}`;
     }
     case "text": {
-      let match = new RegExp(/^([\w ]+?): (.*)/).exec(markdown.value);
+      let match = new RegExp(/^([\w ]+?): (.*)$/).exec(markdown.value);
       if (match) {
-        return `${tex}\\item\\textbf{${match[1]}:} ${match[2]}`;
+        switch (match[1]) {
+          case "Motion": {
+            return `${tex}\\\\\\motion{${match[2]}}`;
+          }
+          case "Vote": {
+            return `${tex}\\vote{${match[2]?.split(" ")[0]}}{${match[2]?.split(" ")[1]}}`;
+          }
+          default:
+            tex = `${tex}\\item\\textbf{${match[1]}:} ${match[2]}`;
+            return tex;
+        }
       } else {
         return `${tex}\\item ${markdown.value}`;
       }

@@ -2,12 +2,14 @@
 
 \usepackage[margin=1in]{geometry}
 
-\usepackage{graphicx,xspace}
+\usepackage{graphicx,xspace,multicol}
 \usepackage{mathptmx}
 
 \usepackage{fancyhdr}
 
 \pagestyle{fancy}
+\fancyhead{}
+\renewcommand\headrulewidth{0pt}
 \fancyfoot[C]{\thepage}
 \fancyfoot[R]{\texttt{v%VERSION%}}
 
@@ -16,7 +18,7 @@
 \widowpenalty10000
 \clubpenalty10000
 
-\usepackage{multirow,bigdelim}
+\usepackage{multirow,bigdelim,soul}
 
 \newcounter{motion}
 \stepcounter{motion}
@@ -49,7 +51,7 @@
 \begin{tabular}{@{}ll}
   \textbf{Date:} & %DATE%\\
   \textbf{Time:} & %TIME%
-\end{tabular}
+\end{tabular}\vspace{\baselineskip}
 
 %CONTENT%
 

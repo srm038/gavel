@@ -38,4 +38,5 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # test files
 *.md
 *.tex
+!template.tex
 *.aux
