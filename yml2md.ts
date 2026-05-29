@@ -19,6 +19,22 @@ const md = (s: string) => {
 const renderCeremony = (c: any) =>
   [c.by, c.description].filter(Boolean).join(" ");
 
+const fmtTime = (s: string) => {
+  s = s.trim();
+  const m = s.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i);
+  if (!m) return s;
+  let h = Number(m[1]!);
+  const min = m[2]!;
+  if (m[3]) {
+    const ampm = m[3].toUpperCase();
+    if (ampm === "PM" && h !== 12) h += 12;
+    if (ampm === "AM" && h === 12) h = 0;
+  }
+  const h12 = h % 12 || 12;
+  const suffix = h < 12 ? "AM" : "PM";
+  return `${h12}:${min} ${suffix}`;
+};
+
 const fmtDate = (s: string) => {
   const parts = s.split("T")[0]!.split("-").map(Number);
   return new Date(parts[0]!, parts[1]! - 1, parts[2]!).toLocaleDateString(
@@ -38,7 +54,7 @@ md(`**Date:** ${fmtDate(m.date)} (${m.meeting_type})`);
 
 // Opening
 if (isAgenda) {
-  let block = `Call to order at **${m.scheduled_start}**.`;
+  let block = `Call to order at **${fmtTime(m.scheduled_start)}**.`;
   if (m.opening_ceremonies?.length) {
     const rendered = m.opening_ceremonies.map(renderCeremony).filter(Boolean);
     if (rendered.length) block += `\n`;
@@ -48,7 +64,7 @@ if (isAgenda) {
   }
   md(block);
 } else {
-  let block = `Called to order at **${m.call_to_order.time}** by ${m.call_to_order.by}.`;
+  let block = `Called to order at **${fmtTime(m.call_to_order.time)}** by ${m.call_to_order.by}.`;
   if (m.opening_ceremonies?.length) {
     const rendered = m.opening_ceremonies.map(renderCeremony).filter(Boolean);
     if (rendered.length) block += `\n`;
