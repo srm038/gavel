@@ -1,7 +1,20 @@
 {
   "name": "ronr-minutes",
   "type": "module",
-  "private": true,
+  "version": "1.0.0",
+  "bin": {
+    "yml2md": "yml2md.ts"
+  },
+  "files": [
+    "yml2md.ts",
+    "md2pdf.sh",
+    "common.schema.yml",
+    "agenda.schema.yml",
+    "minutes.schema.yml",
+    "install-tex.sh",
+    "Brewfile",
+    "!.gitignore"
+  ],
   "devDependencies": {
     "@types/bun": "latest"
   },

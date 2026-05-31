@@ -207,7 +207,8 @@ if (m.attestation) {
 
 const mdFile = file.replace(/\.yml$/, ".md");
 await Bun.write(mdFile, out);
-Bun.spawnSync(["bash", "md2pdf.sh", mdFile]);
+const scriptDir = import.meta.dirname;
+Bun.spawnSync(["bash", scriptDir + "/md2pdf.sh", mdFile]);
 
 function renderMotions(motions: any[], indent = ""): string {
   return motions
