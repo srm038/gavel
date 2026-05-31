@@ -62,12 +62,14 @@ Each command outputs a `.md` and `.pdf` file with the same base name as the inpu
 ## Requirements
 
 - [Bun](https://bun.sh) — runtime for yml2md.ts
-- [Pandoc](https://pandoc.org) + [XeLaTeX](https://tug.org/texlive/) — PDF conversion
+- [Pandoc](https://pandoc.org) — PDF conversion
+- XeLaTeX — PDF engine (provided by TeX distribution)
 - Times New Roman font (or substitute via `md2pdf.sh`)
 - yaml-language-server (optional, for editor validation)
 
 ```bash
 brew bundle
+./install-tex.sh          # TinyTeX (~200 MB) instead of full TeX Live
 ```
 
 ## Schemas
