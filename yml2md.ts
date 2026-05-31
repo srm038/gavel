@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 const { parse } = await import("yaml");
 const file = process.argv[2];
 if (!file) {
