@@ -36,6 +36,11 @@ const fmtTime = (s: string) => {
   return `${h12}:${min} ${suffix}`;
 };
 
+const sortByName = (a: string, b: string) => {
+  const last = (s: string) => s.replace(/\(.*\)/, "").trim().split(/\s+/).pop() ?? "";
+  return last(a).localeCompare(last(b));
+};
+
 const fmtDate = (s: string) => {
   const parts = s.split("T")[0]!.split("-").map(Number);
   return new Date(parts[0]!, parts[1]! - 1, parts[2]!).toLocaleDateString(
@@ -56,18 +61,23 @@ md(`**Date:** ${fmtDate(m.date)} (${m.meeting_type})`);
 // Roll Call
 if (m.roll_call) {
   if (m.roll_call.officers?.length) {
+    const sorted = [...m.roll_call.officers].sort((a: any, b: any) => sortByName(a.name, b.name));
     md(
-      `**Officers:** ${m.roll_call.officers.map((o: any) => `${o.name} (${o.office})`).join(", ")}`,
+      `**Officers:** ${sorted.map((o: any) => `${o.name} (${o.office})`).join(", ")}`,
     );
   }
   if (m.roll_call.members?.length) {
-    md(`**Members:** ${m.roll_call.members.join(", ")}`);
-  }
-  if (m.roll_call.members_absent?.length) {
-    md(`**Members Absent:** ${m.roll_call.members_absent.join(", ")}`);
+    const sorted = [...m.roll_call.members].sort(sortByName);
+    let line = `**Members:** ${sorted.join(", ")}`;
+    if (m.roll_call.members_absent?.length) {
+      const absent = [...m.roll_call.members_absent].sort(sortByName);
+      line += ` *(absent: ${absent.join(", ")})*`;
+    }
+    md(line);
   }
   if (m.roll_call.guests?.length) {
-    md(`**Guests:** ${m.roll_call.guests.join(", ")}`);
+    const sorted = [...m.roll_call.guests].sort(sortByName);
+    md(`**Guests:** ${sorted.join(", ")}`);
   }
   md(`A quorum was ${m.roll_call.quorum ? "" : "not "}present.`);
 }
