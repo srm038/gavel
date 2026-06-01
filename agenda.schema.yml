@@ -34,12 +34,12 @@ properties:
     items:
       type: object
       required:
-        - title
+        - subject
         - by
       properties:
-        title:
+        subject:
           type: string
-          description: Report title
+          description: Report subject
         by:
           type: string
           description: Person or body presenting

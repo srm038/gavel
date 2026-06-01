@@ -138,7 +138,7 @@ for (const file of files) {
   if (m.reports?.length) {
     md(`## Reports`);
     for (const r of m.reports) {
-      let block = `- ${r.by} presented ${r.title}.`;
+      let block = `- ${r.by} presented ${r.subject}.`;
       if (r.motions?.length) block += `\n\n${renderMotions(r.motions, "    ")}`;
       md(block);
     }
