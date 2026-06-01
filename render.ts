@@ -240,7 +240,7 @@ for (const file of files) {
 function renderMotions(motions: any[], indent = ""): string {
   return motions
     .map((mot) => {
-      let header = `**${mot.type || "Main Motion"}**`;
+      let header = `**${mot.type || "Motion"}**`;
       if (mot.by) {
         header += ` (${mot.by}`;
         if (mot.seconded) header += `, *seconded*`;

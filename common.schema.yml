@@ -57,7 +57,7 @@ definitions:
     properties:
       type:
         type: string
-        default: Main Motion
+        default: Motion
         description: Specific RONR motion name in order of precedence
         enum:
           - Fix the Time to Adjourn
@@ -73,7 +73,7 @@ definitions:
           - Refer
           - Amend
           - Postpone Indefinitely
-          - Main Motion
+          - Motion
           - Take from the Table
           - Reconsider
           - Rescind
