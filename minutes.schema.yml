@@ -43,7 +43,7 @@ properties:
     type: object
     description: Roll call of members per RONR §41
     properties:
-      members_present:
+      members:
         type: array
         items:
           type: string
@@ -58,7 +58,7 @@ properties:
         items:
           type: string
         description: Names of members excused (not standard RONR but common)
-      officers_present:
+      officers:
         type: array
         items:
           type: object

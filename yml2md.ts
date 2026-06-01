@@ -55,13 +55,13 @@ md(`**Date:** ${fmtDate(m.date)} (${m.meeting_type})`);
 
 // Roll Call
 if (m.roll_call) {
-  if (m.roll_call.officers_present?.length) {
+  if (m.roll_call.officers?.length) {
     md(
-      `**Officers Present:** ${m.roll_call.officers_present.map((o: any) => `${o.name} (${o.office})`).join(", ")}`,
+      `**Officers:** ${m.roll_call.officers.map((o: any) => `${o.name} (${o.office})`).join(", ")}`,
     );
   }
-  if (m.roll_call.members_present?.length) {
-    md(`**Members Present:** ${m.roll_call.members_present.join(", ")}`);
+  if (m.roll_call.members?.length) {
+    md(`**Members:** ${m.roll_call.members.join(", ")}`);
   }
   if (m.roll_call.members_absent?.length) {
     md(`**Members Absent:** ${m.roll_call.members_absent.join(", ")}`);
