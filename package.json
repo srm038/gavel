@@ -3,12 +3,12 @@
   "type": "module",
   "version": "1.1.0",
   "bin": {
-    "yml2md": "yml2md.ts",
-    "yml2md.sh": "yml2md.sh"
+    "render": "render.ts",
+    "render.sh": "render.sh"
   },
   "files": [
-    "yml2md.ts",
-    "yml2md.sh",
+    "render.ts",
+    "render.sh",
     "md2pdf.sh",
     "common.schema.yml",
     "agenda.schema.yml",
