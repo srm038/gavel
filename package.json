@@ -3,12 +3,13 @@
   "type": "module",
   "version": "1.1.0",
   "bin": {
-    "render": "render.ts",
-    "render.sh": "render.sh"
+    "render": "render.ts"
+  },
+  "scripts": {
+    "render": "bun render.ts"
   },
   "files": [
     "render.ts",
-    "render.sh",
     "md2pdf.sh",
     "common.schema.yml",
     "agenda.schema.yml",
