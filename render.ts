@@ -21,7 +21,7 @@ const getGitSha = async (fp: string) => {
     .text()
     .catch(() => "");
   if (!gitDir.trim()) return null;
-  const rel = await Bun.$`git -C ${dir} ls-files --full-name ${base}`
+  const rel = await Bun.$`git -C ${dir} ls-files ${base}`
     .text()
     .catch(() => "");
   if (!rel.trim()) return null;
