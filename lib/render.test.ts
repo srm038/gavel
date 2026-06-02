@@ -1,5 +1,12 @@
 import { describe, expect, test } from "bun:test";
-import { renderCeremony, fmtTime, sortByName, fmtDate, renderDoc, renderMotions } from "./render.ts";
+import {
+  fmtDate,
+  fmtTime,
+  renderCeremony,
+  renderDoc,
+  renderMotions,
+  sortByName,
+} from "./render.ts";
 
 // ---------------------------------------------------------------------------
 // Factories — only specify what's different from default
@@ -62,9 +69,12 @@ describe("fmtTime", () => {
 // fmtDate
 // ---------------------------------------------------------------------------
 describe("fmtDate", () => {
-  test("ISO date", () => expect(fmtDate("2025-09-17")).toBe("September 17, 2025"));
-  test("ISO+TZ", () => expect(fmtDate("2025-09-17T00:00:00Z")).toBe("September 17, 2025"));
-  test("invalid → Invalid Date", () => expect(fmtDate("not-a-date")).toBe("Invalid Date"));
+  test("ISO date", () =>
+    expect(fmtDate("2025-09-17")).toBe("September 17, 2025"));
+  test("ISO+TZ", () =>
+    expect(fmtDate("2025-09-17T00:00:00Z")).toBe("September 17, 2025"));
+  test("invalid → Invalid Date", () =>
+    expect(fmtDate("not-a-date")).toBe("Invalid Date"));
 });
 
 // ---------------------------------------------------------------------------
@@ -72,13 +82,21 @@ describe("fmtDate", () => {
 // ---------------------------------------------------------------------------
 describe("sortByName", () => {
   test("by last name", () =>
-    expect(["Dr. Zeta", "Mr. Gamma", "Mr. Alpha"].sort(sortByName))
-      .toEqual(["Mr. Alpha", "Mr. Gamma", "Dr. Zeta"]));
+    expect(["Dr. Zeta", "Mr. Gamma", "Mr. Alpha"].sort(sortByName)).toEqual([
+      "Mr. Alpha",
+      "Mr. Gamma",
+      "Dr. Zeta",
+    ]));
   test("parenthetical suffix", () =>
-    expect(["Mr. A. Beta (Chair)", "Mr. G. Beta"].sort(sortByName))
-      .toEqual(["Mr. A. Beta (Chair)", "Mr. G. Beta"]));
+    expect(["Mr. A. Beta (Chair)", "Mr. G. Beta"].sort(sortByName)).toEqual([
+      "Mr. A. Beta (Chair)",
+      "Mr. G. Beta",
+    ]));
   test("single name", () =>
-    expect(["Solo", "Mr. Zeta"].sort(sortByName)).toEqual(["Solo", "Mr. Zeta"]));
+    expect(["Solo", "Mr. Zeta"].sort(sortByName)).toEqual([
+      "Solo",
+      "Mr. Zeta",
+    ]));
   test("empty string", () =>
     expect(["Mr. X", ""].sort(sortByName)).toEqual(["", "Mr. X"]));
 });
@@ -87,8 +105,12 @@ describe("sortByName", () => {
 // renderCeremony
 // ---------------------------------------------------------------------------
 describe("renderCeremony", () => {
-  test("by + desc", () => expect(renderCeremony({ by: "Chair", description: "prayer" })).toBe("Chair prayer"));
-  test("desc only", () => expect(renderCeremony({ description: "Prayer" })).toBe("Prayer"));
+  test("by + desc", () =>
+    expect(renderCeremony({ by: "Chair", description: "prayer" })).toBe(
+      "Chair prayer",
+    ));
+  test("desc only", () =>
+    expect(renderCeremony({ description: "Prayer" })).toBe("Prayer"));
   test("by only", () => expect(renderCeremony({ by: "Chair" })).toBe("Chair"));
   test("empty", () => expect(renderCeremony({})).toBe(""));
   test("empty strings", () => {
@@ -102,82 +124,188 @@ describe("renderCeremony", () => {
 // renderMotions
 // ---------------------------------------------------------------------------
 describe("renderMotions", () => {
-  test("basic", () => expect(renderMotions([mot()])).toBe("**Motion** (Chair): Do it. **Carried** (*voice*)."));
+  test("basic", () =>
+    expect(renderMotions([mot()])).toBe(
+      "**Motion** (Chair): Do it. **Carried** (*voice*).",
+    ));
 
   test("final overrides text", () =>
-    expect(renderMotions([mot({ text: "Old", final: "New." })])).toBe("**Motion** (Chair): New. **Carried** (*voice*)."));
+    expect(renderMotions([mot({ text: "Old", final: "New." })])).toBe(
+      "**Motion** (Chair): New. **Carried** (*voice*).",
+    ));
 
   test("procedural — text===type", () =>
-    expect(renderMotions([{ type: "Adjourn", by: "Chair", vote: carried() }])).toBe("**Adjourn** (Chair). **Carried** (*voice*)."));
+    expect(
+      renderMotions([{ type: "Adjourn", by: "Chair", vote: carried() }]),
+    ).toBe("**Adjourn** (Chair). **Carried** (*voice*)."));
 
   test("default type Motion", () =>
-    expect(renderMotions([{ text: "X.", by: "Chair", vote: carried() }])).toBe("**Motion** (Chair): X. **Carried** (*voice*)."));
+    expect(renderMotions([{ text: "X.", by: "Chair", vote: carried() }])).toBe(
+      "**Motion** (Chair): X. **Carried** (*voice*).",
+    ));
 
   test("trailing period added", () =>
-    expect(renderMotions([{ type: "Motion", text: "Do the thing", by: "Chair" }])).toBe("**Motion** (Chair): Do the thing."));
+    expect(
+      renderMotions([{ type: "Motion", text: "Do the thing", by: "Chair" }]),
+    ).toBe("**Motion** (Chair): Do the thing."));
 
   test("no by — omits parens", () =>
-    expect(renderMotions([{ type: "Motion", text: "Do it.", vote: carried() }])).toBe("**Motion**: Do it. **Carried** (*voice*)."));
+    expect(
+      renderMotions([{ type: "Motion", text: "Do it.", vote: carried() }]),
+    ).toBe("**Motion**: Do it. **Carried** (*voice*)."));
 
   test("already ends with period — no double period", () =>
-    expect(renderMotions([mot({ text: "Fine." })])).toBe("**Motion** (Chair): Fine. **Carried** (*voice*)."));
+    expect(renderMotions([mot({ text: "Fine." })])).toBe(
+      "**Motion** (Chair): Fine. **Carried** (*voice*).",
+    ));
 
   test("detailed vote counts", () =>
-    expect(renderMotions([mot({ vote: carried({ method: "show_of_hands", yes: 8, no: 2, abstain: 0 }) })]))
-      .toBe("**Motion** (Chair): Do it. **Carried** (*show_of_hands*, 8 yes / 2 no / 0 abstain)."));
+    expect(
+      renderMotions([
+        mot({
+          vote: carried({ method: "show_of_hands", yes: 8, no: 2, abstain: 0 }),
+        }),
+      ]),
+    ).toBe(
+      "**Motion** (Chair): Do it. **Carried** (*show_of_hands*, 8 yes / 2 no / 0 abstain).",
+    ));
 
   test("vote member roll call", () =>
-    expect(renderMotions([mot({ vote: carried({ members: [{ name: "Member A", vote: "Yea" }, { name: "Member B", vote: "Nay" }] }) })]))
-      .toBe("**Motion** (Chair): Do it. **Carried** (*voice*: Member A: Yea, Member B: Nay)."));
+    expect(
+      renderMotions([
+        mot({
+          vote: carried({
+            members: [
+              { name: "Member A", vote: "Yea" },
+              { name: "Member B", vote: "Nay" },
+            ],
+          }),
+        }),
+      ]),
+    ).toBe(
+      "**Motion** (Chair): Do it. **Carried** (*voice*: Member A: Yea, Member B: Nay).",
+    ));
 
   test("seconded", () =>
-    expect(renderMotions([mot({ seconded: true })])).toBe("**Motion** (Chair, *seconded*): Do it. **Carried** (*voice*)."));
+    expect(renderMotions([mot({ seconded: true })])).toBe(
+      "**Motion** (Chair, *seconded*): Do it. **Carried** (*voice*).",
+    ));
 
   test("indent", () =>
-    expect(renderMotions([mot()], "    ")).toBe("    **Motion** (Chair): Do it. **Carried** (*voice*)."));
+    expect(renderMotions([mot()], "    ")).toBe(
+      "    **Motion** (Chair): Do it. **Carried** (*voice*).",
+    ));
 
   test("exec session suppresses inner motions", () =>
-    expect(renderMotions([enterExec(), mot({ text: "Confidential." }), riseExec()]))
-      .toBe("**Enter Executive Session** (Chair). **Carried** (*voice*).\n**Rise from Executive Session** (Chair). **Carried** (*voice*)."));
+    expect(
+      renderMotions([enterExec(), mot({ text: "Confidential." }), riseExec()]),
+    ).toBe(
+      "**Enter Executive Session** (Chair). **Carried** (*voice*).\n**Rise from Executive Session** (Chair). **Carried** (*voice*).",
+    ));
 
   test("exec session with lifted shows motions", () =>
-    expect(renderMotions([enterExec({ lifted: { date: "2026-06-01" } }), mot({ text: "Visible." }), riseExec()]))
-      .toBe("**Enter Executive Session** (Chair). **Carried** (*voice*) *(Seal lifted June 1, 2026)*.\n**Motion** (Chair): Visible. **Carried** (*voice*).\n**Rise from Executive Session** (Chair). **Carried** (*voice*)."));
+    expect(
+      renderMotions([
+        enterExec({ lifted: { date: "2026-06-01" } }),
+        mot({ text: "Visible." }),
+        riseExec(),
+      ]),
+    ).toBe(
+      "**Enter Executive Session** (Chair). **Carried** (*voice*) *(Seal lifted June 1, 2026)*.\n**Motion** (Chair): Visible. **Carried** (*voice*).\n**Rise from Executive Session** (Chair). **Carried** (*voice*).",
+    ));
 
   test("lifted with note", () =>
-    expect(renderMotions([enterExec({ lifted: { date: "2026-06-01", note: "By consent" } })])
-      ).toBe("**Enter Executive Session** (Chair). **Carried** (*voice*) *(Seal lifted June 1, 2026: By consent)*."));
+    expect(
+      renderMotions([
+        enterExec({ lifted: { date: "2026-06-01", note: "By consent" } }),
+      ]),
+    ).toBe(
+      "**Enter Executive Session** (Chair). **Carried** (*voice*) *(Seal lifted June 1, 2026: By consent)*.",
+    ));
 
   test("withdrawn → empty", () =>
-    expect(renderMotions([mot({ secondary: [{ type: "Request to Withdraw a Motion", vote: carried() }] })])).toBe(""));
+    expect(
+      renderMotions([
+        mot({
+          secondary: [
+            { type: "Request to Withdraw a Motion", vote: carried() },
+          ],
+        }),
+      ]),
+    ).toBe(""));
 
   test("recordable secondary rendered", () =>
-    expect(renderMotions([mot({ secondary: [{ type: "Refer", text: "To committee.", by: "Member B", vote: carried() }] })])
+    expect(
+      renderMotions([
+        mot({
+          secondary: [
+            {
+              type: "Refer",
+              text: "To committee.",
+              by: "Member B",
+              vote: carried(),
+            },
+          ],
+        }),
+      ]),
     ).toContain("**Refer**"));
 
   test("amend secondary excluded", () =>
-    expect(renderMotions([mot({ secondary: [{ type: "Amend", text: "Add X.", by: "Member B", vote: carried() }] })])
+    expect(
+      renderMotions([
+        mot({
+          secondary: [
+            { type: "Amend", text: "Add X.", by: "Member B", vote: carried() },
+          ],
+        }),
+      ]),
     ).not.toContain("Amend"));
 
   test("empty array", () => expect(renderMotions([])).toBe(""));
 
   test("vote method explicit", () =>
-    expect(renderMotions([mot({ vote: carried({ method: "Roll Call" }) })])).toBe("**Motion** (Chair): Do it. **Carried** (*roll call*)."));
+    expect(
+      renderMotions([mot({ vote: carried({ method: "Roll Call" }) })]),
+    ).toBe("**Motion** (Chair): Do it. **Carried** (*roll call*)."));
 
   test("vote yes/no no abstain", () =>
-    expect(renderMotions([mot({ vote: carried({ yes: 8, no: 2 }) })])).toBe("**Motion** (Chair): Do it. **Carried** (*voice*, 8 yes / 2 no / 0 abstain)."));
+    expect(renderMotions([mot({ vote: carried({ yes: 8, no: 2 }) })])).toBe(
+      "**Motion** (Chair): Do it. **Carried** (*voice*, 8 yes / 2 no / 0 abstain).",
+    ));
 
   test("secondary vote not Carried — excluded", () =>
-    expect(renderMotions([mot({ secondary: [{ type: "Refer", text: "To committee.", by: "Member B", vote: { result: "Failed" } }] })])
+    expect(
+      renderMotions([
+        mot({
+          secondary: [
+            {
+              type: "Refer",
+              text: "To committee.",
+              by: "Member B",
+              vote: { result: "Failed" },
+            },
+          ],
+        }),
+      ]),
     ).not.toContain("Refer"));
 
   test("multiple motions in array", () =>
-    expect(renderMotions([mot({ text: "First." }), mot({ text: "Second." })])).toBe(
+    expect(
+      renderMotions([mot({ text: "First." }), mot({ text: "Second." })]),
+    ).toBe(
       "**Motion** (Chair): First. **Carried** (*voice*).\n**Motion** (Chair): Second. **Carried** (*voice*).",
     ));
 
   test("nested exec sessions — both suppressed", () =>
-    expect(renderMotions([enterExec(), mot({ text: "C1." }), riseExec(), enterExec(), mot({ text: "C2." }), riseExec()])
+    expect(
+      renderMotions([
+        enterExec(),
+        mot({ text: "C1." }),
+        riseExec(),
+        enterExec(),
+        mot({ text: "C2." }),
+        riseExec(),
+      ]),
     ).not.toMatch(/C1|C2/));
 });
 
@@ -196,13 +324,25 @@ describe("renderDoc", () => {
           guests: ["Guest G"],
           quorum: true,
         },
-        opening_ceremonies: [{ by: "Officer A", description: "opened with prayer." }],
+        opening_ceremonies: [
+          { by: "Officer A", description: "opened with prayer." },
+        ],
         reports: [{ subject: "the budget", by: "Member B" }],
         announcements: ["Fundraiser reminder."],
-        closing_ceremonies: [{ by: "Member E", description: "closed in prayer." }],
-        attestation: { secretary: "Secretary, Clerk", date_approved: "2025-09-17" },
+        closing_ceremonies: [
+          { by: "Member E", description: "closed in prayer." },
+        ],
+        attestation: {
+          secretary: "Secretary, Clerk",
+          date_approved: "2025-09-17",
+        },
         adjournment: {
-          motion: { type: "Adjourn", text: "Meeting adjourned.", by: "Officer A", vote: carried() },
+          motion: {
+            type: "Adjourn",
+            text: "Meeting adjourned.",
+            by: "Officer A",
+            vote: carried(),
+          },
         },
       }),
     });
@@ -225,13 +365,19 @@ describe("renderDoc", () => {
 
   test("full agenda", () => {
     const r = renderDoc({
-      type: "agenda", title: "Committee", date: "2026-06-01", meeting_type: "R",
-      scheduled_start: "18:30", status: "Draft",
+      type: "agenda",
+      title: "Committee",
+      date: "2026-06-01",
+      meeting_type: "R",
+      scheduled_start: "18:30",
+      status: "Draft",
       minutes_approval: { date: "2025-09-17" },
       opening_ceremonies: [{ description: "Prayer" }],
       reports: [{ subject: "the budget", by: "the Treasurer" }],
       unfinished_business: [{ motions: [{ text: "Ratify prior actions." }] }],
-      new_business: [{ motions: [{ text: "Adopt RONR." }, { text: "Standing rule." }] }],
+      new_business: [
+        { motions: [{ text: "Adopt RONR." }, { text: "Standing rule." }] },
+      ],
       closing_ceremonies: [{ description: "Prayer" }],
     });
     expect(r).toContain("**AGENDA** (*draft*)");
@@ -259,7 +405,13 @@ describe("renderDoc", () => {
   });
 
   test("no status parens", () => {
-    const r = renderDoc({ type: "agenda", title: "T", date: "2025-01-01", meeting_type: "R", scheduled_start: "10:00" });
+    const r = renderDoc({
+      type: "agenda",
+      title: "T",
+      date: "2025-01-01",
+      meeting_type: "R",
+      scheduled_start: "10:00",
+    });
     expect(r).toContain("**AGENDA**");
     expect(r).not.toContain("(*)");
   });
@@ -270,65 +422,106 @@ describe("renderDoc", () => {
   });
 
   test("minutes approval with corrections and motion", () => {
-    const r = renderDoc(min({
-      minutes_approval: { date: "2024-12-01", result: "Approved as Corrected", corrections: "p.3", motion: { by: "Chair", seconded: true } },
-    }));
+    const r = renderDoc(
+      min({
+        minutes_approval: {
+          date: "2024-12-01",
+          result: "Approved as Corrected",
+          corrections: "p.3",
+          motion: { by: "Chair", seconded: true },
+        },
+      }),
+    );
     expect(r).toContain("were **Approved as Corrected**.");
     expect(r).toContain("Corrections: p.3.");
     expect(r).toContain("Motion by Chair, *seconded*.");
   });
 
   test("minutes approval motion without seconded", () =>
-    expect(renderDoc(min({ minutes_approval: { date: "2024-12-01", result: "Approved", motion: { by: "Officer A" } } })))
-      .toContain("Motion by Officer A."));
+    expect(
+      renderDoc(
+        min({
+          minutes_approval: {
+            date: "2024-12-01",
+            result: "Approved",
+            motion: { by: "Officer A" },
+          },
+        }),
+      ),
+    ).toContain("Motion by Officer A."));
 
   test("recess before adjournment", () => {
-    const r = renderDoc(min({
-      recess: { motion: { type: "Take a Recess", by: "Chair", vote: carried() } },
-      adjournment: { motion: { type: "Adjourn", by: "Chair", vote: carried() } },
-    }));
+    const r = renderDoc(
+      min({
+        recess: {
+          motion: { type: "Take a Recess", by: "Chair", vote: carried() },
+        },
+        adjournment: {
+          motion: { type: "Adjourn", by: "Chair", vote: carried() },
+        },
+      }),
+    );
     expect(r.indexOf("Take a Recess")).toBeLessThan(r.indexOf("Adjourn"));
   });
 
   test("recess only, no adjournment", () =>
-    expect(renderDoc(min({ recess: { motion: { type: "Take a Recess", by: "Chair", vote: carried() } } })))
-      .toContain("**Take a Recess**"));
+    expect(
+      renderDoc(
+        min({
+          recess: {
+            motion: { type: "Take a Recess", by: "Chair", vote: carried() },
+          },
+        }),
+      ),
+    ).toContain("**Take a Recess**"));
 
   test("multiple ceremonies listed", () => {
-    const r = renderDoc(min({
-      closing_ceremonies: [
-        { by: "Person A", description: "prayer" },
-        { by: "Person B", description: "song" },
-      ],
-    }));
+    const r = renderDoc(
+      min({
+        closing_ceremonies: [
+          { by: "Person A", description: "prayer" },
+          { by: "Person B", description: "song" },
+        ],
+      }),
+    );
     expect(r).toContain("- Person A prayer");
     expect(r).toContain("- Person B song");
   });
 
   test("single ceremony — no bullet prefix", () =>
-    expect(renderDoc(min({ opening_ceremonies: [{ by: "Chair", description: "prayer" }] })))
-      .toContain("Chair prayer"));
+    expect(
+      renderDoc(
+        min({ opening_ceremonies: [{ by: "Chair", description: "prayer" }] }),
+      ),
+    ).toContain("Chair prayer"));
 
   test("report subject missing — fallback text", () =>
-    expect(renderDoc(min({ reports: [{ by: "Chair" }] })))
-      .toContain("- Chair presented (missing subject)."));
+    expect(renderDoc(min({ reports: [{ by: "Chair" }] }))).toContain(
+      "- Chair presented (missing subject).",
+    ));
 
   test("empty secretary string", () =>
-    expect(renderDoc(min({ attestation: { secretary: "" } })))
-      .toContain("**Minutes prepared by:** "));
+    expect(renderDoc(min({ attestation: { secretary: "" } }))).toContain(
+      "**Minutes prepared by:** ",
+    ));
 
   test("guests without officers or members", () =>
-    expect(renderDoc(min({ roll_call: { guests: ["Guest X"], quorum: true } })))
-      .toContain("**Guests:** Guest X"));
+    expect(
+      renderDoc(min({ roll_call: { guests: ["Guest X"], quorum: true } })),
+    ).toContain("**Guests:** Guest X"));
 
   // -----------------------------------------------------------------------
   // Business items — all four shapes, identical for unfinished + new
   // -----------------------------------------------------------------------
   const bizItem: [string, any, string][] = [
-    ["title+desc",   { title: "X", description: "Y" },            "- **X**: Y"],
-    ["desc only",    { description: "Y" },                         "- Y"],
-    ["title only",   { title: "X" },                               "- **X**"],
-    ["motions only", { motions: [mot({ text: "M." })] },          "**Motion** (Chair): M."],
+    ["title+desc", { title: "X", description: "Y" }, "- **X**: Y"],
+    ["desc only", { description: "Y" }, "- Y"],
+    ["title only", { title: "X" }, "- **X**"],
+    [
+      "motions only",
+      { motions: [mot({ text: "M." })] },
+      "**Motion** (Chair): M.",
+    ],
   ];
 
   for (const [label, item, want] of bizItem) {
@@ -341,14 +534,20 @@ describe("renderDoc", () => {
   }
 
   test("section ordering: reports → special_orders → unfinished → new", () => {
-    const r = renderDoc(min({
-      reports: [{ subject: "R", by: "A" }],
-      special_orders: [{ description: "SO" }],
-      unfinished_business: [{ description: "UB" }],
-      new_business: [{ description: "NB" }],
-    }));
+    const r = renderDoc(
+      min({
+        reports: [{ subject: "R", by: "A" }],
+        special_orders: [{ description: "SO" }],
+        unfinished_business: [{ description: "UB" }],
+        new_business: [{ description: "NB" }],
+      }),
+    );
     expect(r.indexOf("Reports")).toBeLessThan(r.indexOf("Special Orders"));
-    expect(r.indexOf("Special Orders")).toBeLessThan(r.indexOf("Unfinished Business"));
-    expect(r.indexOf("Unfinished Business")).toBeLessThan(r.indexOf("New Business"));
+    expect(r.indexOf("Special Orders")).toBeLessThan(
+      r.indexOf("Unfinished Business"),
+    );
+    expect(r.indexOf("Unfinished Business")).toBeLessThan(
+      r.indexOf("New Business"),
+    );
   });
 });
