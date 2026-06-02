@@ -8,11 +8,11 @@ type: object
 required:
   - status
   - call_to_order
-  - attestation
 anyOf:
   - required: [adjournment]
   - required: [recess]
 if:
+  required: [attestation]
   properties:
     attestation:
       required: [date_approved]
