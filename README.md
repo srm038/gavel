@@ -37,6 +37,14 @@ Each file produces `.md` and `.pdf` with the same base name.
 
 `.helix/languages.toml` and `.vscode/settings.json` map `*.minutes.yml` → `minutes.schema.yml`, `*.agenda.yml` → `agenda.schema.yml` for yaml-language-server validation on save.
 
+When installed as a dependency, `postinstall.sh` auto-creates `.helix/languages.toml` in the consumer project (if it doesn't already exist). Bun blocks unknown postinstall scripts by default:
+
+```bash
+bun pm trust ronr-minutes   # allow postinstall, then re-run it
+```
+
+This writes schema paths relative to `node_modules/ronr-minutes/` so editor validation works without manual setup.
+
 ## Conventions
 
 - **Motion types** — Omit `type` → renders as "Motion". Explicit types render as labeled.
@@ -67,12 +75,12 @@ Each file produces `.md` and `.pdf` with the same base name.
 - [Bun](https://bun.sh) — runtime
 - [Pandoc](https://pandoc.org) — PDF conversion
 - XeLaTeX — PDF engine
-- Times New Roman font (or substitute via `md2pdf.sh`)
+- Times New Roman font (or substitute via `scripts/md2pdf.sh`)
 - yaml-language-server (optional, for editor validation)
 
 ```bash
 brew bundle
-./install-tex.sh
+./scripts/install-tex.sh
 ```
 
 ## Future Improvements

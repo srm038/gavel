@@ -1,20 +1,21 @@
 {
   "name": "ronr-minutes",
   "type": "module",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "bin": {
     "render": "render.ts"
   },
   "scripts": {
-    "render": "bun render.ts"
+    "render": "bun render.ts",
+    "postinstall": "./scripts/postinstall.sh"
   },
   "files": [
     "render.ts",
-    "md2pdf.sh",
-    "common.schema.yml",
-    "agenda.schema.yml",
-    "minutes.schema.yml",
-    "install-tex.sh",
+    "scripts/md2pdf.sh",
+
+    "scripts/postinstall.sh",
+
+    "scripts/install-tex.sh",
     "Brewfile",
     "!.gitignore"
   ],

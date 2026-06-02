@@ -302,7 +302,7 @@ for (const file of files) {
   const scriptDir = import.meta.dirname;
   const result = Bun.spawnSync([
     "bash",
-    scriptDir + "/md2pdf.sh",
+    scriptDir + "/scripts/md2pdf.sh",
     mdFile,
     sha ?? "",
   ]);
