@@ -1,4 +1,5 @@
 #!/usr/bin/env bun
+import path from "path";
 const { parse } = await import("yaml");
 const Ajv = (await import("ajv")).default;
 const addFormats = (await import("ajv-formats")).default;
@@ -12,6 +13,30 @@ if (!args.length) {
 const files = args.flatMap((arg) =>
   /[*?[]/.test(arg) ? [...new Bun.Glob(arg).scanSync()] : [arg],
 );
+
+const getGitSha = async (fp: string) => {
+  const dir = path.dirname(fp) || ".";
+  const base = path.basename(fp);
+  const gitDir = await Bun.$`git -C ${dir} rev-parse --show-toplevel`
+    .text()
+    .catch(() => "");
+  if (!gitDir.trim()) return null;
+  const rel = await Bun.$`git -C ${dir} ls-files --full-name ${base}`
+    .text()
+    .catch(() => "");
+  if (!rel.trim()) return null;
+  const { stdout } = Bun.spawnSync([
+    "git",
+    "-C",
+    dir,
+    "log",
+    "-1",
+    "--format=%h",
+    "--",
+    rel.trim(),
+  ]);
+  return stdout.toString().trim() || null;
+};
 
 const renderCeremony = (c: any) =>
   [c.by, c.description].filter(Boolean).join(" ");
@@ -33,7 +58,12 @@ const fmtTime = (s: string) => {
 };
 
 const sortByName = (a: string, b: string) => {
-  const last = (s: string) => s.replace(/\(.*\)/, "").trim().split(/\s+/).pop() ?? "";
+  const last = (s: string) =>
+    s
+      .replace(/\(.*\)/, "")
+      .trim()
+      .split(/\s+/)
+      .pop() ?? "";
   return last(a).localeCompare(last(b));
 };
 
@@ -104,7 +134,9 @@ for (const file of files) {
   // Roll Call
   if (m.roll_call) {
     if (m.roll_call.officers?.length) {
-      const sorted = [...m.roll_call.officers].sort((a: any, b: any) => sortByName(a.name, b.name));
+      const sorted = [...m.roll_call.officers].sort((a: any, b: any) =>
+        sortByName(a.name, b.name),
+      );
       md(
         `**Officers:** ${sorted.map((o: any) => `${o.name} (${o.office})`).join(", ")}`,
       );
@@ -242,7 +274,9 @@ for (const file of files) {
       let block = "";
       if (motions.length) block += renderMotions(motions);
       if (hasCeremonies) {
-        const rendered = m.closing_ceremonies.map(renderCeremony).filter(Boolean);
+        const rendered = m.closing_ceremonies
+          .map(renderCeremony)
+          .filter(Boolean);
         if (rendered.length) {
           if (block) block += `\n`;
           for (const r of rendered) {
@@ -261,11 +295,20 @@ for (const file of files) {
     );
   }
 
+  const sha = await getGitSha(file);
+
   const mdFile = file.replace(/\.yml$/, ".md");
   await Bun.write(mdFile, out);
-  const result = Bun.spawnSync(["bash", scriptDir + "/md2pdf.sh", mdFile]);
+  const scriptDir = import.meta.dirname;
+  const result = Bun.spawnSync([
+    "bash",
+    scriptDir + "/md2pdf.sh",
+    mdFile,
+    sha ?? "",
+  ]);
   console.log(`  → ${mdFile}`);
-  if (result.exitCode === 0) console.log(`  → ${mdFile.replace(/\.md$/, ".pdf")}`);
+  if (result.exitCode === 0)
+    console.log(`  → ${mdFile.replace(/\.md$/, ".pdf")}`);
 }
 
 function renderMotions(motions: any[], indent = ""): string {
@@ -301,7 +344,9 @@ function renderMotions(motions: any[], indent = ""): string {
       if (!line.endsWith(".")) line += ".";
 
       const withdrawn = mot.secondary?.some(
-        (s: any) => s.type === "Request to Withdraw a Motion" && s.vote?.result === "Carried",
+        (s: any) =>
+          s.type === "Request to Withdraw a Motion" &&
+          s.vote?.result === "Carried",
       );
       if (withdrawn) return null;
 
