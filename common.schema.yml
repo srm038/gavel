@@ -88,6 +88,12 @@ definitions:
           - Appeal
           - Suspend the Rules
           - Division of Assembly
+          - Division of the Question
+          - Object to Consideration of a Question
+          - Parliamentary Inquiry
+          - Request for Information
+          - Request to Withdraw a Motion
+          - Request to be Excused from a Duty
       text:
         type: string
         description: Exact wording of the motion

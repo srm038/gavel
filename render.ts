@@ -300,12 +300,19 @@ function renderMotions(motions: any[], indent = ""): string {
 
       if (!line.endsWith(".")) line += ".";
 
-      const recordableTypes = new Set(["Commit", "Refer", "Limit or Extend Debate", "Previous Question", "Take a Recess", "Adjourn", "Lay on the Table"]);
-      const recordable = mot.secondary?.filter((s: any) => recordableTypes.has(s.type));
+      const withdrawn = mot.secondary?.some(
+        (s: any) => s.type === "Request to Withdraw a Motion" && s.vote?.result === "Carried",
+      );
+      if (withdrawn) return null;
+
+      const recordable = mot.secondary?.filter(
+        (s: any) => s.vote?.result === "Carried" && s.type !== "Amend",
+      );
       if (recordable?.length) {
         line += `\n\n${renderMotions(recordable, indent)}`;
       }
       return indent + line;
     })
+    .filter(Boolean)
     .join("\n");
 }

@@ -39,9 +39,10 @@ Each file produces `.md` and `.pdf` with the same base name.
 
 ## Conventions
 
-- **Motion types** — Omit `type` → renders as "Motion". Explicit types (Adjourn, Commit, Refer, etc.) render as labeled.
+- **Motion types** — Omit `type` → renders as "Motion". Explicit types render as labeled.
+- **`Commit` / `Refer`** — RONR treats these as equivalent motions. Either may be used.
 - **`final`** — If present, replaces `text` in rendered output (captures amended wording).
-- **`secondary`** — Array of motions applied while main motion was pending. Recordable types rendered: Commit, Refer, Limit or Extend Debate, Previous Question, Take a Recess, Adjourn, Lay on the Table.
+- **`secondary`** — Motions applied while main motion was pending. Per RONR §48:4, only carried secondaries are rendered; lost and withdrawn are suppressed. Amend is omitted (folded into `final`).
 - **`subject`** — Reports use `subject` (not `title`) to avoid confusion with business item titles.
 - **Roll call** — Officers, Members, Guests alphabetically by last name. Absent members inline as `*(absent: ...)*`.
 - **Minutes approval** — Agenda: "to be approved". Minutes: "were **Approved**".
@@ -79,7 +80,6 @@ brew bundle
 
 - **Election schema** — Support multiple ballots, runoffs, write-ins, preferential voting, abstentions per candidate, motion-to-close-nominations
 - **Executive session model** — Mark portions as executive session, separate attendance, sealing mechanism
-- **Additional RONR motion types** — Add "Object to Consideration", "Parliamentary Inquiry", "Request for Information", "Division of the Question" to motion type enum
 
 ### Pipeline
 
