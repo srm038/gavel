@@ -79,7 +79,6 @@ brew bundle
 
 - **Election schema** — Support multiple ballots, runoffs, write-ins, preferential voting, abstentions per candidate, motion-to-close-nominations
 - **Executive session model** — Mark portions as executive session, separate attendance, sealing mechanism
-- **Report type enum** — Resolve ambiguity between "Special", "Ad Hoc Committee", "Standing Committee" — flatten or clarify
 - **Additional RONR motion types** — Add "Object to Consideration", "Parliamentary Inquiry", "Request for Information", "Division of the Question" to motion type enum
 
 ### Pipeline

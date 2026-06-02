@@ -129,15 +129,6 @@ properties:
         by:
           type: string
           description: Person or body presenting the report
-        type:
-          type: string
-          enum:
-            - Officer
-            - Board
-            - Standing Committee
-            - Ad Hoc Committee
-            - Special
-          description: Type of report
         content:
           type: string
           description: Summary of the report (what was done, not what was said per RONR)

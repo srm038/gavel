@@ -46,15 +46,6 @@ properties:
         by:
           type: string
           description: Person or body presenting
-        type:
-          type: string
-          enum:
-            - Officer
-            - Board
-            - Standing Committee
-            - Ad Hoc Committee
-            - Special
-          description: Type of report
         estimated_time:
           type: string
           description: Allocated time for the report
