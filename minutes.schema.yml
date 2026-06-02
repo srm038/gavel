@@ -418,54 +418,9 @@ definitions:
               $ref: "#/definitions/motion"
           final:
             type: string
-            description: Exact wording of the motion as finally adopted or disposed, after all secondary motions are resolved
+            description: Exact wording of the motion as finally adopted, after all secondary motions are resolved
           vote:
             $ref: "#/definitions/vote"
-          disposition:
-            type: string
-            enum:
-              - Adopted
-              - Rejected
-              - Referred
-              - Postponed
-              - Tabled
-              - Withdrawn
-              - Lost
-            description: Final disposition of the motion
-          referred_to:
-            type: string
-            description: Committee or body the motion was referred to
-          postponed_to:
-            type: string
-            format: date
-            description: Date the motion was postponed to
-        allOf:
-          - if:
-              required:
-                - disposition
-              properties:
-                disposition:
-                  const: Referred
-            then:
-              required:
-                - referred_to
-            else:
-              not:
-                required:
-                  - referred_to
-          - if:
-              required:
-                - disposition
-              properties:
-                disposition:
-                  const: Postponed
-            then:
-              required:
-                - postponed_to
-            else:
-              not:
-                required:
-                  - postponed_to
 
   election:
     allOf:

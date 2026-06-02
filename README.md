@@ -93,5 +93,5 @@ brew bundle
 ## Schemas
 
 - `common.schema.yml` — Shared definitions: `meeting_metadata`, `ceremony`, `motion`, `minutes_approval`, `election`
-- `agenda.schema.yml` — Pre-meeting fields (`scheduled_start`); no vote/disposition
-- `minutes.schema.yml` — Recording fields (`call_to_order`, `roll_call`, `attestation`); extends motions with `vote`, `disposition`, `final`, `secondary`; requires `adjournment` or `recess`
+- `agenda.schema.yml` — Pre-meeting fields (`scheduled_start`); no vote
+- `minutes.schema.yml` — Recording fields (`call_to_order`, `roll_call`, `attestation`); extends motions with `vote`, `final`, `secondary`; requires `adjournment` or `recess`

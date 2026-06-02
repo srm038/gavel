@@ -298,14 +298,6 @@ function renderMotions(motions: any[], indent = ""): string {
         line += ")";
       }
 
-      if (mot.disposition) {
-        line += ` ${mot.disposition}`;
-        if (mot.referred_to) line += ` (referred to ${mot.referred_to})`;
-        if (mot.postponed_to)
-          line += ` (postponed to ${fmtDate(mot.postponed_to)})`;
-        if (mot.corrections?.length) line += `: ${mot.corrections.join(", ")}`;
-      }
-
       if (!line.endsWith(".")) line += ".";
 
       const recordableTypes = new Set(["Commit", "Refer", "Limit or Extend Debate", "Previous Question", "Take a Recess", "Adjourn", "Lay on the Table"]);
