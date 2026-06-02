@@ -316,8 +316,13 @@ for (const file of files) {
 }
 
 function renderMotions(motions: any[], indent = ""): string {
+  let inExec = false;
   return motions
     .map((mot) => {
+      if (mot.type === "Enter Executive Session") inExec = !mot.lifted;
+      else if (mot.type === "Rise from Executive Session") inExec = false;
+      else if (inExec) return null;
+
       let header = `**${mot.type || "Motion"}**`;
       if (mot.by) {
         header += ` (${mot.by}`;
@@ -325,10 +330,14 @@ function renderMotions(motions: any[], indent = ""): string {
         header += ")";
       }
 
-      let text = mot.final || mot.text;
-      if (!text.endsWith(".")) text += ".";
-
-      let line = `${header}: ${text}`;
+      let text = mot.final || mot.text || mot.type;
+      let line;
+      if (text === mot.type) {
+        line = `${header}.`;
+      } else {
+        if (!text.endsWith(".")) text += ".";
+        line = `${header}: ${text}`;
+      }
 
       if (mot.vote) {
         let method = mot.vote.method?.toLowerCase() || "voice";
@@ -343,6 +352,11 @@ function renderMotions(motions: any[], indent = ""): string {
         if (mot.vote.members?.length)
           line += `: ${mot.vote.members.map((mem: any) => `${mem.name}: ${mem.vote}`).join(", ")}`;
         line += ")";
+      }
+
+      if (mot.lifted) {
+        const d = fmtDate(mot.lifted.date);
+        line += ` *(Seal lifted ${d}${mot.lifted.note ? `: ${mot.lifted.note}` : ""})*`;
       }
 
       if (!line.endsWith(".")) line += ".";

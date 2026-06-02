@@ -417,6 +417,16 @@ definitions:
           final:
             type: string
             description: Exact wording of the motion as finally adopted, after all secondary motions are resolved
+          lifted:
+            type: object
+            description: Date the seal of secrecy was lifted (§63)
+            required: [date]
+            properties:
+              date:
+                type: string
+                format: date
+              note:
+                type: string
           vote:
             $ref: "#/definitions/vote"
 

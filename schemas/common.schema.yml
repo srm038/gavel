@@ -59,8 +59,6 @@ definitions:
   motion:
     type: object
     description: A motion without results (pre-meeting or placeholder)
-    required:
-      - text
     properties:
       type:
         type: string
@@ -81,6 +79,8 @@ definitions:
           - Amend
           - Postpone Indefinitely
           - Motion
+          - Enter Executive Session
+          - Rise from Executive Session
           - Take from the Table
           - Reconsider
           - Rescind
