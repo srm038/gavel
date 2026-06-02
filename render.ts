@@ -12,7 +12,7 @@ if (!args.length) {
 
 const files = args.flatMap((arg) =>
   /[*?[]/.test(arg) ? [...new Bun.Glob(arg).scanSync()] : [arg],
-);
+).filter((f) => f.endsWith(".yml"));
 
 const getGitSha = async (fp: string) => {
   const dir = path.dirname(fp) || ".";
