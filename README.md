@@ -72,6 +72,24 @@ brew bundle
 ./install-tex.sh
 ```
 
+## Future Improvements
+
+### Schema
+
+- **Document type discriminator** — Replace `scheduled_start` heuristic with explicit `type: [agenda, minutes]` field in `meeting_metadata`
+- **Election schema** — Support multiple ballots, runoffs, write-ins, preferential voting, abstentions per candidate, motion-to-close-nominations
+- **Executive session model** — Mark portions as executive session, separate attendance, sealing mechanism
+- **Report type enum** — Resolve ambiguity between "Special", "Ad Hoc Committee", "Standing Committee" — flatten or clarify
+- **Additional RONR motion types** — Add "Object to Consideration", "Parliamentary Inquiry", "Request for Information", "Division of the Question" to motion type enum
+- **Conditional `final` field** — Require `final` when disposition=Adopted; conditional validation
+
+### Pipeline
+
+- **Tests** — Snapshot tests for Markdown output, schema validation tests
+- **Better CLI** — `--help`, `--strict` (fail on validation), `--output-dir`, `--format md|pdf|both|html`, `--watch`
+- **Agenda→minutes promotion** — Tool to diff, merge, or promote agenda YAML to minutes skeleton after meeting
+- **Parallel processing** — Use `Promise.all()` for batch rendering multiple files
+
 ## Schemas
 
 - `common.schema.yml` — Shared definitions: `meeting_metadata`, `ceremony`, `motion`, `minutes_approval`, `election`
