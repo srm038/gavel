@@ -55,6 +55,25 @@ properties:
             type: string
           description: Attached documents
 
+  special_orders:
+    type: array
+    description: Special orders from previous meeting
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          description: Item title
+        description:
+          type: string
+          description: Description of the business
+        motions:
+          type: array
+          description: Expected motions
+          items:
+            $ref: common.schema.yml#/definitions/motion
+
   unfinished_business:
     type: array
     description: Unfinished business from previous meeting

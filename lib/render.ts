@@ -121,6 +121,29 @@ export function renderDoc(m: any): string {
     }
   }
 
+  if (m.special_orders?.length) {
+    md(`## Special Orders`);
+    for (const item of m.special_orders) {
+      let block = "";
+      if (item.title && item.description) {
+        block = `- **${item.title}**: ${item.description}`;
+        if (item.motions?.length)
+          block += `\n\n${renderMotions(item.motions, "    ")}`;
+      } else if (item.description) {
+        block = `- ${item.description}`;
+        if (item.motions?.length)
+          block += `\n\n${renderMotions(item.motions, "    ")}`;
+      } else if (item.title) {
+        block = `- **${item.title}**`;
+        if (item.motions?.length)
+          block += `\n\n${renderMotions(item.motions, "    ")}`;
+      } else if (item.motions?.length) {
+        block = renderMotions(item.motions, "- ");
+      }
+      md(block);
+    }
+  }
+
   if (m.unfinished_business?.length) {
     md(`## Unfinished Business`);
     for (const item of m.unfinished_business) {

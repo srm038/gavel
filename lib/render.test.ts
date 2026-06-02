@@ -336,5 +336,19 @@ describe("renderDoc", () => {
       expect(renderDoc(min({ unfinished_business: [item] }))).toContain(want));
     test(`new business ${label}`, () =>
       expect(renderDoc(min({ new_business: [item] }))).toContain(want));
+    test(`special orders ${label}`, () =>
+      expect(renderDoc(min({ special_orders: [item] }))).toContain(want));
   }
+
+  test("section ordering: reports → special_orders → unfinished → new", () => {
+    const r = renderDoc(min({
+      reports: [{ subject: "R", by: "A" }],
+      special_orders: [{ description: "SO" }],
+      unfinished_business: [{ description: "UB" }],
+      new_business: [{ description: "NB" }],
+    }));
+    expect(r.indexOf("Reports")).toBeLessThan(r.indexOf("Special Orders"));
+    expect(r.indexOf("Special Orders")).toBeLessThan(r.indexOf("Unfinished Business"));
+    expect(r.indexOf("Unfinished Business")).toBeLessThan(r.indexOf("New Business"));
+  });
 });

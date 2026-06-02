@@ -156,6 +156,23 @@ properties:
           description: Motions arising from this report
           items:
             $ref: "#/definitions/motion"
+  special_orders:
+    type: array
+    description: Special orders per RONR §41
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          description: Item title
+        description:
+          type: string
+          description: Description of the business
+        motions:
+          type: array
+          items:
+            $ref: "#/definitions/motion"
   unfinished_business:
     type: array
     description: Unfinished business and general orders per RONR §41
