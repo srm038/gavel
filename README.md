@@ -81,7 +81,6 @@ brew bundle
 - **Executive session model** — Mark portions as executive session, separate attendance, sealing mechanism
 - **Report type enum** — Resolve ambiguity between "Special", "Ad Hoc Committee", "Standing Committee" — flatten or clarify
 - **Additional RONR motion types** — Add "Object to Consideration", "Parliamentary Inquiry", "Request for Information", "Division of the Question" to motion type enum
-- **Conditional `final` field** — Require `final` when disposition=Adopted; conditional validation
 
 ### Pipeline
 
