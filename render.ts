@@ -1,5 +1,7 @@
 #!/usr/bin/env bun
 const { parse } = await import("yaml");
+const Ajv = (await import("ajv")).default;
+const addFormats = (await import("ajv-formats")).default;
 
 const args = process.argv.slice(2);
 if (!args.length) {
@@ -43,6 +45,24 @@ const fmtDate = (s: string) => {
   );
 };
 
+// Load and compile JSON Schemas for validation
+const scriptDir = import.meta.dirname;
+const commonSchema = parse(
+  await Bun.file(scriptDir + "/common.schema.yml").text(),
+);
+const agendaSchema = parse(
+  await Bun.file(scriptDir + "/agenda.schema.yml").text(),
+);
+const minutesSchema = parse(
+  await Bun.file(scriptDir + "/minutes.schema.yml").text(),
+);
+
+const ajv = new Ajv({ strict: false, allErrors: true });
+addFormats(ajv);
+ajv.addSchema(commonSchema);
+const validateAgenda = ajv.compile(agendaSchema);
+const validateMinutes = ajv.compile(minutesSchema);
+
 for (const file of files) {
   console.log(`  ${file}`);
   let raw;
@@ -55,6 +75,16 @@ for (const file of files) {
   const m = parse(raw);
 
   const isAgenda = !!m.scheduled_start;
+
+  // Validate against schema
+  const validate = isAgenda ? validateAgenda : validateMinutes;
+  const valid = validate(m);
+  if (!valid) {
+    console.error(`  ⚠ Validation errors:`);
+    for (const err of validate.errors ?? []) {
+      console.error(`    - ${err.instancePath || "/"}: ${err.message}`);
+    }
+  }
 
   let out = "";
 
@@ -138,7 +168,9 @@ for (const file of files) {
   if (m.reports?.length) {
     md(`## Reports`);
     for (const r of m.reports) {
-      let block = `- ${r.by} presented ${r.subject}${r.subject.endsWith(".") ? "" : "."}`;
+      let subj = r.subject ?? "(missing subject)";
+      if (!subj.endsWith(".")) subj += ".";
+      let block = `- ${r.by} presented ${subj}`;
       if (r.motions?.length) block += `\n\n${renderMotions(r.motions, "    ")}`;
       md(block);
     }
@@ -231,7 +263,6 @@ for (const file of files) {
 
   const mdFile = file.replace(/\.yml$/, ".md");
   await Bun.write(mdFile, out);
-  const scriptDir = import.meta.dirname;
   const result = Bun.spawnSync(["bash", scriptDir + "/md2pdf.sh", mdFile]);
   console.log(`  → ${mdFile}`);
   if (result.exitCode === 0) console.log(`  → ${mdFile.replace(/\.md$/, ".pdf")}`);

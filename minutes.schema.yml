@@ -17,6 +17,7 @@ not:
 properties:
   call_to_order:
     type: object
+    additionalProperties: false
     description: Call to order per RONR §41
     required:
       - time
@@ -41,6 +42,7 @@ properties:
       $ref: "#/definitions/ceremony"
   roll_call:
     type: object
+    additionalProperties: false
     description: Roll call of members per RONR §41
     properties:
       members:
@@ -112,15 +114,12 @@ properties:
           not:
             required:
               - corrections
-    else:
-      not:
-        required:
-          - corrections
   reports:
     type: array
     description: Reports of officers, boards, and committees per RONR §41
     items:
       type: object
+      additionalProperties: false
       required:
         - subject
         - by
@@ -163,6 +162,7 @@ properties:
     description: Unfinished business and general orders per RONR §41
     items:
       type: object
+      additionalProperties: false
       properties:
         title:
           type: string
@@ -179,6 +179,7 @@ properties:
     description: New business per RONR §41
     items:
       type: object
+      additionalProperties: false
       properties:
         title:
           type: string
@@ -202,6 +203,7 @@ properties:
       type: string
   adjournment:
     type: object
+    additionalProperties: false
     description: Adjournment per RONR §41
     properties:
       motion:
@@ -218,6 +220,7 @@ properties:
 
   recess:
     type: object
+    additionalProperties: false
     description: Recess (meeting suspended to continue later)
     properties:
       motion:
@@ -233,6 +236,7 @@ properties:
           required: [type]
   attestation:
     type: object
+    additionalProperties: false
     description: Secretary's attestation
     properties:
       secretary:
@@ -255,6 +259,7 @@ definitions:
 
   vote:
     type: object
+    additionalProperties: false
     description: A vote per RONR §44-46
     properties:
       method:
