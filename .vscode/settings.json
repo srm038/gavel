@@ -1,6 +1,6 @@
 {
   "yaml.schemas": {
-    "minutes.schema.yml": ["*.minutes.yml"],
-    "agenda.schema.yml": ["*.agenda.yml"]
+    "schemas/minutes.schema.yml": ["*.minutes.yml"],
+    "schemas/agenda.schema.yml": ["*.agenda.yml"]
   }
 }

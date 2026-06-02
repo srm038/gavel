@@ -77,15 +77,15 @@ const fmtDate = (s: string) => {
 
 // Load and compile JSON Schemas for validation
 const scriptDir = import.meta.dirname;
-const commonSchema = parse(
-  await Bun.file(scriptDir + "/common.schema.yml").text(),
-);
-const agendaSchema = parse(
-  await Bun.file(scriptDir + "/agenda.schema.yml").text(),
-);
-const minutesSchema = parse(
-  await Bun.file(scriptDir + "/minutes.schema.yml").text(),
-);
+const yml = (s: string) => Bun.file(scriptDir + s).text();
+const [common, agenda, mins] = await Promise.all([
+  yml("/schemas/common.schema.yml"),
+  yml("/schemas/agenda.schema.yml"),
+  yml("/schemas/minutes.schema.yml"),
+]);
+const commonSchema = parse(common);
+const agendaSchema = parse(agenda);
+const minutesSchema = parse(mins);
 
 const ajv = new Ajv({ strict: false, allErrors: true });
 addFormats(ajv);

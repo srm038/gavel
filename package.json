@@ -16,6 +16,9 @@
     "scripts/postinstall.sh",
 
     "scripts/install-tex.sh",
+    "schemas/common.schema.yml",
+    "schemas/agenda.schema.yml",
+    "schemas/minutes.schema.yml",
     "Brewfile",
     "!.gitignore"
   ],
