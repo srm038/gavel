@@ -11,7 +11,14 @@ definitions:
       - title
       - date
       - meeting_type
+      - type
     properties:
+      type:
+        type: string
+        enum:
+          - agenda
+          - minutes
+        description: Document type
       title:
         type: string
         description: Name of the organization

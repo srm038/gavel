@@ -11,10 +11,9 @@ required:
 anyOf:
   - required: [adjournment]
   - required: [recess]
-not:
-  required:
-    - scheduled_start
 properties:
+  type:
+    const: minutes
   call_to_order:
     type: object
     additionalProperties: false

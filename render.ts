@@ -74,7 +74,7 @@ for (const file of files) {
   }
   const m = parse(raw);
 
-  const isAgenda = !!m.scheduled_start;
+  const isAgenda = m.type === "agenda";
 
   // Validate against schema
   const validate = isAgenda ? validateAgenda : validateMinutes;

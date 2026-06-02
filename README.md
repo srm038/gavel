@@ -12,7 +12,7 @@ No intermediate steps — `bun render.ts <file|glob>` produces both files.
 
 - **YAML as source of truth** — minutes are structured data, not prose
 - **JSON Schema validation** — catch structural errors on save (Helix, VS Code)
-- **Single renderer** — auto-detects agenda vs. minutes by `m.scheduled_start`
+- **Single renderer** — auto-detects agenda vs. minutes by `m.type`
 - **Dual schema, shared definitions** — `common.schema.yml` ground shared fields, agenda/minutes schemas extend via `allOf`
 - **Repeatable output** — same YAML always produces same Markdown + PDF
 
@@ -20,8 +20,8 @@ No intermediate steps — `bun render.ts <file|glob>` produces both files.
 
 | Type     | Schema              | Sample               | Detection              |
 |----------|---------------------|----------------------|------------------------|
-| Agenda   | `agenda.schema.yml` | `sample.agenda.yml`  | `m.scheduled_start`    |
-| Minutes  | `minutes.schema.yml`| `sample.minutes.yml` | `m.call_to_order`      |
+| Agenda   | `agenda.schema.yml` | `sample.agenda.yml`  | `m.type === "agenda"`  |
+| Minutes  | `minutes.schema.yml`| `sample.minutes.yml` | `m.type === "minutes"` |
 
 ## Usage
 
@@ -52,6 +52,7 @@ Each file produces `.md` and `.pdf` with the same base name.
 
 | Field | Agenda | Minutes |
 |-------|--------|---------|
+| `type` | `"agenda"` | `"minutes"` |
 | `scheduled_start` | required | absent |
 | `call_to_order` | absent | required |
 | `roll_call` | absent | optional |
@@ -76,7 +77,6 @@ brew bundle
 
 ### Schema
 
-- **Document type discriminator** — Replace `scheduled_start` heuristic with explicit `type: [agenda, minutes]` field in `meeting_metadata`
 - **Election schema** — Support multiple ballots, runoffs, write-ins, preferential voting, abstentions per candidate, motion-to-close-nominations
 - **Executive session model** — Mark portions as executive session, separate attendance, sealing mechanism
 - **Report type enum** — Resolve ambiguity between "Special", "Ad Hoc Committee", "Standing Committee" — flatten or clarify
