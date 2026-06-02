@@ -166,9 +166,7 @@ describe("renderMotions", () => {
           vote: carried({ method: "show_of_hands", yes: 8, no: 2, abstain: 0 }),
         }),
       ]),
-    ).toBe(
-      "**Motion** (Chair): Do it. **Carried** (*show_of_hands*, 8 yes / 2 no / 0 abstain).",
-    ));
+    ).toBe("**Motion** (Chair): Do it. **Carried** (*show_of_hands*, 8/2/0)."));
 
   test("vote member roll call", () =>
     expect(
@@ -182,9 +180,7 @@ describe("renderMotions", () => {
           }),
         }),
       ]),
-    ).toBe(
-      "**Motion** (Chair): Do it. **Carried** (*voice*: Member A: Yea, Member B: Nay).",
-    ));
+    ).toBe("**Motion** (Chair): Do it. **Carried** (*voice*, 1/1/0)."));
 
   test("seconded", () =>
     expect(renderMotions([mot({ seconded: true })])).toBe(
@@ -270,7 +266,7 @@ describe("renderMotions", () => {
 
   test("vote yes/no no abstain", () =>
     expect(renderMotions([mot({ vote: carried({ yes: 8, no: 2 }) })])).toBe(
-      "**Motion** (Chair): Do it. **Carried** (*voice*, 8 yes / 2 no / 0 abstain).",
+      "**Motion** (Chair): Do it. **Carried** (*voice*, 8/2/0).",
     ));
 
   test("secondary vote not Carried — excluded", () =>

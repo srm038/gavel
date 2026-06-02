@@ -258,15 +258,16 @@ export function renderMotions(motions: any[], indent = ""): string {
       if (mot.vote) {
         let method = mot.vote.method?.toLowerCase() || "voice";
         line += ` **${mot.vote.result}** (*${method}*`;
-        if (
-          mot.vote.yes !== undefined ||
-          mot.vote.no !== undefined ||
-          mot.vote.abstain !== undefined
-        ) {
-          line += `, ${mot.vote.yes ?? 0} yes / ${mot.vote.no ?? 0} no / ${mot.vote.abstain ?? 0} abstain`;
+        let { yes, no, abstain } = mot.vote;
+        if (mot.vote.members?.length) {
+          const v = (v: string) => v.toLowerCase();
+          yes = mot.vote.members.filter((m: any) => v(m.vote) === "yes" || v(m.vote) === "yea").length;
+          no = mot.vote.members.filter((m: any) => v(m.vote) === "no" || v(m.vote) === "nay").length;
+          abstain = mot.vote.members.filter((m: any) => v(m.vote) === "abstain").length;
         }
-        if (mot.vote.members?.length)
-          line += `: ${mot.vote.members.map((mem: any) => `${mem.name}: ${mem.vote}`).join(", ")}`;
+        if (yes !== undefined || no !== undefined || abstain !== undefined) {
+          line += `, ${yes ?? 0}/${no ?? 0}/${abstain ?? 0}`;
+        }
         line += ")";
       }
 
