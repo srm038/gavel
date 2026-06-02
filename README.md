@@ -45,6 +45,7 @@ Each file produces `.md` and `.pdf` with the same base name.
 - **`secondary`** — Motions applied while main motion was pending. Per RONR §48:4, only carried secondaries are rendered; lost and withdrawn are suppressed. Amend is omitted (folded into `final`).
 - **`subject`** — Reports use `subject` (not `title`) to avoid confusion with business item titles.
 - **Roll call** — Officers, Members, Guests alphabetically by last name. Absent members inline as `*(absent: ...)*`.
+- **PDF footer** — Git short SHA on right, page number center, no header.
 - **Minutes approval** — Agenda: "to be approved". Minutes: "were **Approved**".
 - **Date formatting** — YYYY-MM-DD → "September 17, 2025".
 - **Time formatting** — 24h or 12h input → "6:30 PM".
