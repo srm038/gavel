@@ -290,9 +290,9 @@ for (const file of files) {
 
   // Attestation
   if (m.attestation) {
-    md(`\nMinutes prepared by: ${m.attestation.secretary}`);
+    md(`\n---\n**Minutes prepared by:** ${m.attestation.secretary}`);
     if (m.attestation.date_approved)
-      md(`Approved by the committee on: ${fmtDate(m.attestation.date_approved)}`);
+      md(`**Approved by the committee on:** ${fmtDate(m.attestation.date_approved)}`);
   }
 
   const sha = await getGitSha(file);
