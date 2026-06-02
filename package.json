@@ -7,10 +7,12 @@
   },
   "scripts": {
     "render": "bun render.ts",
-    "postinstall": "./scripts/postinstall.sh"
+    "postinstall": "./scripts/postinstall.sh",
+    "test": "bun test"
   },
   "files": [
     "render.ts",
+    "lib/render.ts",
     "scripts/md2pdf.sh",
 
     "scripts/postinstall.sh",
