@@ -10,9 +10,11 @@ if (!args.length) {
   process.exit(1);
 }
 
-const files = args.flatMap((arg) =>
-  /[*?[]/.test(arg) ? [...new Bun.Glob(arg).scanSync()] : [arg],
-).filter((f) => f.endsWith(".yml"));
+const files = args
+  .flatMap((arg) =>
+    /[*?[]/.test(arg) ? [...new Bun.Glob(arg).scanSync()] : [arg],
+  )
+  .filter((f) => f.endsWith(".yml"));
 
 const getGitSha = async (fp: string) => {
   const dir = path.dirname(fp) || ".";
@@ -289,11 +291,11 @@ for (const file of files) {
   }
 
   // Attestation
-  if (m.attestation) {
-    md(`\n---\n**Minutes prepared by:** ${m.attestation.secretary}`);
-    if (m.attestation.date_approved)
-      md(`**Approved by the committee on:** ${fmtDate(m.attestation.date_approved)}`);
-  }
+  let line = `\n---\n**Minutes prepared by:** ${m.attestation.secretary}`;
+  line += m.attestation.date_approved
+    ? ` *(approved: ${fmtDate(m.attestation.date_approved)})*`
+    : " *(awaiting approval)*";
+  md(line);
 
   const sha = await getGitSha(file);
 

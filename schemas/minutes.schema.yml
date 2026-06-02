@@ -8,9 +8,18 @@ type: object
 required:
   - status
   - call_to_order
+  - attestation
 anyOf:
   - required: [adjournment]
   - required: [recess]
+if:
+  properties:
+    attestation:
+      required: [date_approved]
+then:
+  properties:
+    status:
+      const: Approved
 properties:
   type:
     const: minutes
@@ -228,6 +237,8 @@ properties:
     type: object
     additionalProperties: false
     description: Secretary's attestation
+    required:
+      - secretary
     properties:
       secretary:
         type: string
@@ -236,9 +247,6 @@ properties:
         type: string
         format: date
         description: Date the minutes were approved
-      signed_by:
-        type: string
-        description: Person who signed the minutes
 definitions:
   ceremony:
     allOf:
