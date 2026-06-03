@@ -3,7 +3,7 @@
 Author meeting minutes and agendas in YAML, validate against JSON Schema, render to Markdown + PDF in one command.
 
 ```
-.yml ─────── render.ts ───────→  .md + .pdf
+.yml → render.ts → .md + .pdf
 ```
 
 No intermediate steps — `bun render.ts <file|glob>` produces both files.
@@ -18,10 +18,10 @@ No intermediate steps — `bun render.ts <file|glob>` produces both files.
 
 ## Document Types
 
-| Type     | Schema              | Sample               | Detection              |
-|----------|---------------------|----------------------|------------------------|
-| Agenda   | `agenda.schema.yml` | `sample.agenda.yml`  | `m.type === "agenda"`  |
-| Minutes  | `minutes.schema.yml`| `sample.minutes.yml` | `m.type === "minutes"` |
+| Type    | Schema               | Sample               | Detection              |
+| ------- | -------------------- | -------------------- | ---------------------- |
+| Agenda  | `agenda.schema.yml`  | `sample.agenda.yml`  | `m.type === "agenda"`  |
+| Minutes | `minutes.schema.yml` | `sample.minutes.yml` | `m.type === "minutes"` |
 
 ## Usage
 
@@ -60,15 +60,15 @@ This writes schema paths relative to `node_modules/ronr-minutes/` so editor vali
 
 ## Required vs Optional
 
-| Field | Agenda | Minutes |
-|-------|--------|---------|
-| `type` | `"agenda"` | `"minutes"` |
-| `scheduled_start` | required | absent |
-| `call_to_order` | absent | required |
-| `roll_call` | absent | optional |
-| `adjournment` | optional | at least one |
-| `recess` | absent | at least one |
-| `attestation` | absent | optional |
+| Field             | Agenda     | Minutes      |
+| ----------------- | ---------- | ------------ |
+| `type`            | `"agenda"` | `"minutes"`  |
+| `scheduled_start` | required   | absent       |
+| `call_to_order`   | absent     | required     |
+| `roll_call`       | absent     | optional     |
+| `adjournment`     | optional   | at least one |
+| `recess`          | absent     | at least one |
+| `attestation`     | absent     | optional     |
 
 ## Requirements
 
@@ -87,12 +87,13 @@ brew bundle
 
 ### Schema
 
+- **Committee type on reports** — Distinguish standing committee vs special (ad hoc) committee reports per RONR Order of Business
+- **Consent agenda** — Support grouping routine items for single-vote approval
+- **Committee of the whole** — Record that assembly went into committee of the whole and the resulting report
 - **Election schema** — Support multiple ballots, runoffs, write-ins, preferential voting, abstentions per candidate, motion-to-close-nominations
-- **Executive session model** — Mark portions as executive session, separate attendance, sealing mechanism
 
 ### Pipeline
 
-- **Tests** — Snapshot tests for Markdown output, schema validation tests
 - **Better CLI** — `--help`, `--strict` (fail on validation), `--output-dir`, `--format md|pdf|both|html`, `--watch`
 - **Agenda→minutes promotion** — Tool to diff, merge, or promote agenda YAML to minutes skeleton after meeting
 - **Parallel processing** — Use `Promise.all()` for batch rendering multiple files
