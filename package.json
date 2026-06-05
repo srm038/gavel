@@ -1,7 +1,7 @@
 {
-  "name": "ronr-minutes",
+  "name": "gavel",
   "type": "module",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "bin": {
     "render": "render.ts",
     "md2pdf": "scripts/md2pdf.sh"
@@ -16,9 +16,7 @@
     "render.ts",
     "lib/render.ts",
     "scripts/md2pdf.sh",
-
     "scripts/postinstall.sh",
-
     "scripts/install-tex.sh",
     "schemas/common.schema.yml",
     "schemas/agenda.schema.yml",

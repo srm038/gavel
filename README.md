@@ -1,4 +1,4 @@
-# ronr-minutes — Minutes as Code
+# gavel — Minutes as Code
 
 Author meeting minutes and agendas in YAML, validate against JSON Schema, render to Markdown + PDF in one command.
 
@@ -40,10 +40,10 @@ Each file produces `.md` and `.pdf` with the same base name.
 When installed as a dependency, `postinstall.sh` auto-creates `.helix/languages.toml` in the consumer project (if it doesn't already exist). Bun blocks unknown postinstall scripts by default:
 
 ```bash
-bun pm trust ronr-minutes   # allow postinstall, then re-run it
+bun pm trust gavel   # allow postinstall, then re-run it
 ```
 
-This writes schema paths relative to `node_modules/ronr-minutes/` so editor validation works without manual setup.
+This writes schema paths relative to `node_modules/gavel/` so editor validation works without manual setup.
 
 ## Conventions
 
