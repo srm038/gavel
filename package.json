@@ -3,10 +3,12 @@
   "type": "module",
   "version": "1.1.1",
   "bin": {
-    "render": "render.ts"
+    "render": "render.ts",
+    "md2pdf": "scripts/md2pdf.sh"
   },
   "scripts": {
     "render": "bun render.ts",
+    "md2pdf": "./scripts/md2pdf.sh",
     "postinstall": "./scripts/postinstall.sh",
     "test": "bun test"
   },
