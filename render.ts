@@ -1,5 +1,4 @@
 #!/usr/bin/env bun
-import path from "path";
 import { renderDoc } from "./lib/render.ts";
 const { parse } = await import("yaml");
 const Ajv = (await import("ajv")).default;
@@ -16,30 +15,6 @@ const files = args
     /[*?[]/.test(arg) ? [...new Bun.Glob(arg).scanSync()] : [arg],
   )
   .filter((f) => f.endsWith(".yml"));
-
-const getGitSha = async (fp: string) => {
-  const dir = path.dirname(fp) || ".";
-  const base = path.basename(fp);
-  const gitDir = await Bun.$`git -C ${dir} rev-parse --show-toplevel`
-    .text()
-    .catch(() => "");
-  if (!gitDir.trim()) return null;
-  const rel = await Bun.$`git -C ${dir} ls-files ${base}`
-    .text()
-    .catch(() => "");
-  if (!rel.trim()) return null;
-  const { stdout } = Bun.spawnSync([
-    "git",
-    "-C",
-    dir,
-    "log",
-    "-1",
-    "--format=%h",
-    "--",
-    rel.trim(),
-  ]);
-  return stdout.toString().trim() || null;
-};
 
 // Load and compile JSON Schemas for validation
 const scriptDir = import.meta.dirname;
@@ -84,8 +59,6 @@ for (const file of files) {
 
   const out = renderDoc(m);
 
-  const sha = await getGitSha(file);
-
   const mdFile = file.replace(/\.yml$/, ".md");
   await Bun.write(mdFile, out);
   const scriptDir = import.meta.dirname;
@@ -93,7 +66,6 @@ for (const file of files) {
     "bash",
     scriptDir + "/scripts/md2pdf.sh",
     mdFile,
-    sha ?? "",
   ]);
   console.log(`  → ${mdFile}`);
   if (result.exitCode === 0)

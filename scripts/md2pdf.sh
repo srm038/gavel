@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-file="${1:?Usage: md2pdf.sh <file.md> [sha]}"
-sha="${2:-}"
+file="${1:?Usage: md2pdf.sh <file.md>}"
+sha=""
+dir=$(dirname "$file")
+gitRoot=$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null)
+[ -n "$gitRoot" ] && sha=$(git -C "$gitRoot" log -1 --format=%h -- "$dir/$(basename "$file")" 2>/dev/null)
 
 args=(
   "$file" -o "${file%.md}.pdf"
