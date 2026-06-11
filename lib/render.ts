@@ -256,17 +256,19 @@ export function renderMotions(motions: any[], indent = ""): string {
       }
 
       if (mot.vote) {
-        let method = mot.vote.method?.toLowerCase() || "voice";
+        let method = mot.vote.method?.toLowerCase() || "unanimous consent";
         line += ` **${mot.vote.result}** (*${method}*`;
-        let { yes, no, abstain } = mot.vote;
-        if (mot.vote.members?.length) {
-          const v = (v: string) => v.toLowerCase();
-          yes = mot.vote.members.filter((m: any) => v(m.vote) === "yes" || v(m.vote) === "yea").length;
-          no = mot.vote.members.filter((m: any) => v(m.vote) === "no" || v(m.vote) === "nay").length;
-          abstain = mot.vote.members.filter((m: any) => v(m.vote) === "abstain").length;
-        }
-        if (yes !== undefined || no !== undefined || abstain !== undefined) {
-          line += `, ${yes ?? 0}/${no ?? 0}/${abstain ?? 0}`;
+        if (method !== "unanimous consent") {
+          let { yes, no, abstain } = mot.vote;
+          if (mot.vote.members?.length) {
+            const v = (v: string) => v.toLowerCase();
+            yes = mot.vote.members.filter((m: any) => v(m.vote) === "yes" || v(m.vote) === "yea").length;
+            no = mot.vote.members.filter((m: any) => v(m.vote) === "no" || v(m.vote) === "nay").length;
+            abstain = mot.vote.members.filter((m: any) => v(m.vote) === "abstain").length;
+          }
+          if (yes !== undefined || no !== undefined || abstain !== undefined) {
+            line += `, ${yes ?? 0}/${no ?? 0}/${abstain ?? 0}`;
+          }
         }
         line += ")";
       }

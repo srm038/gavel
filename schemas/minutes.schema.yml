@@ -328,11 +328,14 @@ definitions:
         description: Outcome of the vote
     allOf:
       - if:
-          required: [method]
-          properties:
-            method:
-              enum:
-                - Unanimous Consent
+          anyOf:
+            - not:
+                required: [method]
+            - required: [method]
+              properties:
+                method:
+                  enum:
+                    - Unanimous Consent
         then:
           required:
             - result

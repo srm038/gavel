@@ -126,22 +126,22 @@ describe("renderCeremony", () => {
 describe("renderMotions", () => {
   test("basic", () =>
     expect(renderMotions([mot()])).toBe(
-      "**Motion** (Chair): Do it. **Carried** (*voice*).",
+      "**Motion** (Chair): Do it. **Carried** (*unanimous consent*).",
     ));
 
   test("final overrides text", () =>
     expect(renderMotions([mot({ text: "Old", final: "New." })])).toBe(
-      "**Motion** (Chair): New. **Carried** (*voice*).",
+      "**Motion** (Chair): New. **Carried** (*unanimous consent*).",
     ));
 
   test("procedural — text===type", () =>
     expect(
       renderMotions([{ type: "Adjourn", by: "Chair", vote: carried() }]),
-    ).toBe("**Adjourn** (Chair). **Carried** (*voice*)."));
+    ).toBe("**Adjourn** (Chair). **Carried** (*unanimous consent*)."));
 
   test("default type Motion", () =>
     expect(renderMotions([{ text: "X.", by: "Chair", vote: carried() }])).toBe(
-      "**Motion** (Chair): X. **Carried** (*voice*).",
+      "**Motion** (Chair): X. **Carried** (*unanimous consent*).",
     ));
 
   test("trailing period added", () =>
@@ -152,11 +152,11 @@ describe("renderMotions", () => {
   test("no by — omits parens", () =>
     expect(
       renderMotions([{ type: "Motion", text: "Do it.", vote: carried() }]),
-    ).toBe("**Motion**: Do it. **Carried** (*voice*)."));
+    ).toBe("**Motion**: Do it. **Carried** (*unanimous consent*)."));
 
   test("already ends with period — no double period", () =>
     expect(renderMotions([mot({ text: "Fine." })])).toBe(
-      "**Motion** (Chair): Fine. **Carried** (*voice*).",
+      "**Motion** (Chair): Fine. **Carried** (*unanimous consent*).",
     ));
 
   test("detailed vote counts", () =>
@@ -173,6 +173,7 @@ describe("renderMotions", () => {
       renderMotions([
         mot({
           vote: carried({
+            method: "Roll Call",
             members: [
               { name: "Member A", vote: "Yea" },
               { name: "Member B", vote: "Nay" },
@@ -180,23 +181,23 @@ describe("renderMotions", () => {
           }),
         }),
       ]),
-    ).toBe("**Motion** (Chair): Do it. **Carried** (*voice*, 1/1/0)."));
+    ).toBe("**Motion** (Chair): Do it. **Carried** (*roll call*, 1/1/0)."));
 
   test("seconded", () =>
     expect(renderMotions([mot({ seconded: true })])).toBe(
-      "**Motion** (Chair, *seconded*): Do it. **Carried** (*voice*).",
+      "**Motion** (Chair, *seconded*): Do it. **Carried** (*unanimous consent*).",
     ));
 
   test("indent", () =>
     expect(renderMotions([mot()], "    ")).toBe(
-      "    **Motion** (Chair): Do it. **Carried** (*voice*).",
+      "    **Motion** (Chair): Do it. **Carried** (*unanimous consent*).",
     ));
 
   test("exec session suppresses inner motions", () =>
     expect(
       renderMotions([enterExec(), mot({ text: "Confidential." }), riseExec()]),
     ).toBe(
-      "**Enter Executive Session** (Chair). **Carried** (*voice*).\n**Rise from Executive Session** (Chair). **Carried** (*voice*).",
+      "**Enter Executive Session** (Chair). **Carried** (*unanimous consent*).\n**Rise from Executive Session** (Chair). **Carried** (*unanimous consent*).",
     ));
 
   test("exec session with lifted shows motions", () =>
@@ -207,7 +208,7 @@ describe("renderMotions", () => {
         riseExec(),
       ]),
     ).toBe(
-      "**Enter Executive Session** (Chair). **Carried** (*voice*) *(Seal lifted June 1, 2026)*.\n**Motion** (Chair): Visible. **Carried** (*voice*).\n**Rise from Executive Session** (Chair). **Carried** (*voice*).",
+      "**Enter Executive Session** (Chair). **Carried** (*unanimous consent*) *(Seal lifted June 1, 2026)*.\n**Motion** (Chair): Visible. **Carried** (*unanimous consent*).\n**Rise from Executive Session** (Chair). **Carried** (*unanimous consent*).",
     ));
 
   test("lifted with note", () =>
@@ -216,7 +217,7 @@ describe("renderMotions", () => {
         enterExec({ lifted: { date: "2026-06-01", note: "By consent" } }),
       ]),
     ).toBe(
-      "**Enter Executive Session** (Chair). **Carried** (*voice*) *(Seal lifted June 1, 2026: By consent)*.",
+      "**Enter Executive Session** (Chair). **Carried** (*unanimous consent*) *(Seal lifted June 1, 2026: By consent)*.",
     ));
 
   test("withdrawn → empty", () =>
@@ -265,9 +266,9 @@ describe("renderMotions", () => {
     ).toBe("**Motion** (Chair): Do it. **Carried** (*roll call*)."));
 
   test("vote yes/no no abstain", () =>
-    expect(renderMotions([mot({ vote: carried({ yes: 8, no: 2 }) })])).toBe(
-      "**Motion** (Chair): Do it. **Carried** (*voice*, 8/2/0).",
-    ));
+    expect(
+      renderMotions([mot({ vote: carried({ method: "Counted Division", yes: 8, no: 2 }) })]),
+    ).toBe("**Motion** (Chair): Do it. **Carried** (*counted division*, 8/2/0)."));
 
   test("secondary vote not Carried — excluded", () =>
     expect(
@@ -289,7 +290,7 @@ describe("renderMotions", () => {
     expect(
       renderMotions([mot({ text: "First." }), mot({ text: "Second." })]),
     ).toBe(
-      "**Motion** (Chair): First. **Carried** (*voice*).\n**Motion** (Chair): Second. **Carried** (*voice*).",
+      "**Motion** (Chair): First. **Carried** (*unanimous consent*).\n**Motion** (Chair): Second. **Carried** (*unanimous consent*).",
     ));
 
   test("nested exec sessions — both suppressed", () =>
