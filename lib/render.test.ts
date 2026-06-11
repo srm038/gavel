@@ -418,6 +418,14 @@ describe("renderDoc", () => {
     expect(r).toContain("*(awaiting approval)*");
   });
 
+  test("approved status without attestation date", () => {
+    const r = renderDoc(
+      min({ status: "Approved", attestation: { secretary: "S" } }),
+    );
+    expect(r).toContain("*(approved)*");
+    expect(r).not.toContain("awaiting approval");
+  });
+
   test("minutes approval with corrections and motion", () => {
     const r = renderDoc(
       min({

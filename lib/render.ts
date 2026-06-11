@@ -226,9 +226,13 @@ export function renderDoc(m: any): string {
 
   if (m.attestation) {
     let line = `\n---\n**Minutes prepared by:** ${m.attestation.secretary}`;
-    line += m.attestation.date_approved
-      ? ` *(approved: ${fmtDate(m.attestation.date_approved)})*`
-      : " *(awaiting approval)*";
+    if (m.attestation.date_approved) {
+      line += ` *(approved: ${fmtDate(m.attestation.date_approved)})*`;
+    } else if (m.status === "Approved") {
+      line += " *(approved)*";
+    } else {
+      line += " *(awaiting approval)*";
+    }
     md(line);
   }
 
