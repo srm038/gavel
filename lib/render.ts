@@ -125,72 +125,39 @@ export function renderDoc(m: any): string {
     }
   }
 
-  if (m.special_orders?.length) {
-    md(`## Special Orders`);
-    for (const item of m.special_orders) {
-      let block = "";
-      if (item.title && item.description) {
-        block = `- **${item.title}**: ${item.description}`;
-        if (item.motions?.length)
-          block += `\n\n${renderMotions(item.motions, "    ")}`;
-      } else if (item.description) {
-        block = `- ${item.description}`;
-        if (item.motions?.length)
-          block += `\n\n${renderMotions(item.motions, "    ")}`;
-      } else if (item.title) {
-        block = `- **${item.title}**`;
-        if (item.motions?.length)
-          block += `\n\n${renderMotions(item.motions, "    ")}`;
-      } else if (item.motions?.length) {
-        block = renderMotions(item.motions, "- ");
-      }
-      md(block);
+  const renderBusinessItem = (item: any) => {
+    let block = "";
+    if (item.title && item.description) {
+      block = `- **${item.title}**: ${item.description}`;
+      if (item.motions?.length)
+        block += `\n\n${renderMotions(item.motions, "    ")}`;
+    } else if (item.description) {
+      block = `- ${item.description}`;
+      if (item.motions?.length)
+        block += `\n\n${renderMotions(item.motions, "    ")}`;
+    } else if (item.title) {
+      block = `- **${item.title}**`;
+      if (item.motions?.length)
+        block += `\n\n${renderMotions(item.motions, "    ")}`;
+    } else if (item.motions?.length) {
+      block = renderMotions(item.motions, "- ");
     }
-  }
+    return block;
+  };
 
-  if (m.unfinished_business?.length) {
-    md(`## Unfinished Business`);
-    for (const item of m.unfinished_business) {
-      let block = "";
-      if (item.title && item.description) {
-        block = `- **${item.title}**: ${item.description}`;
-        if (item.motions?.length)
-          block += `\n\n${renderMotions(item.motions, "    ")}`;
-      } else if (item.description) {
-        block = `- ${item.description}`;
-        if (item.motions?.length)
-          block += `\n\n${renderMotions(item.motions, "    ")}`;
-      } else if (item.title) {
-        block = `- **${item.title}**`;
-        if (item.motions?.length)
-          block += `\n\n${renderMotions(item.motions, "    ")}`;
-      } else if (item.motions?.length) {
-        block = renderMotions(item.motions, "- ");
-      }
-      md(block);
-    }
-  }
+  const businessSections = [
+    ["## Special Orders", m.special_orders],
+    ["## Unfinished Business", m.unfinished_business],
+    ["## New Business", m.new_business],
+  ] as const;
 
-  if (m.new_business?.length) {
-    md(`## New Business`);
-    for (const item of m.new_business) {
-      let block = "";
-      if (item.title && item.description) {
-        block = `- **${item.title}**: ${item.description}`;
-        if (item.motions?.length)
-          block += `\n\n${renderMotions(item.motions, "    ")}`;
-      } else if (item.description) {
-        block = `- ${item.description}`;
-        if (item.motions?.length)
-          block += `\n\n${renderMotions(item.motions, "    ")}`;
-      } else if (item.title) {
-        block = `- **${item.title}**`;
-        if (item.motions?.length)
-          block += `\n\n${renderMotions(item.motions, "    ")}`;
-      } else if (item.motions?.length) {
-        block = renderMotions(item.motions, "- ");
+  for (const [heading, items] of businessSections) {
+    if (items?.length) {
+      const blocks = items.map(renderBusinessItem).filter(Boolean);
+      if (blocks.length) {
+        md(heading);
+        blocks.forEach(md);
       }
-      md(block);
     }
   }
 
