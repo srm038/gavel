@@ -113,9 +113,14 @@ export function renderDoc(m: any): string {
   if (m.reports?.length) {
     md(`## Reports`);
     for (const r of m.reports) {
-      let subj = r.subject ?? "(missing subject)";
-      if (!subj.endsWith(".")) subj += ".";
-      let block = `- ${r.by} presented ${subj}`;
+      let base = r.subject ?? "(missing subject)";
+      if (!base.endsWith(".")) base += ".";
+      if (r.content) {
+        let c = r.content;
+        if (!c.endsWith(".")) c += ".";
+        base += ` ${c}`;
+      }
+      let block = `- ${base}`;
       if (r.motions?.length) block += `\n\n${renderMotions(r.motions, "    ")}`;
       md(block);
     }

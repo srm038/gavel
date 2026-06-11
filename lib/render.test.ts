@@ -353,7 +353,7 @@ describe("renderDoc", () => {
     expect(r).toContain("A quorum was present.");
     expect(r).toContain("Called to order at **6:42 PM**");
     expect(r).toContain("Officer A opened with prayer.");
-    expect(r).toContain("- Member B presented the budget.");
+    expect(r).toContain("- the budget.");
     expect(r).toContain("- Fundraiser reminder.");
     expect(r).toContain("Member E closed in prayer.");
     expect(r).toContain("**Minutes prepared by:** Secretary, Clerk");
@@ -494,7 +494,7 @@ describe("renderDoc", () => {
 
   test("report subject missing — fallback text", () =>
     expect(renderDoc(min({ reports: [{ by: "Chair" }] }))).toContain(
-      "- Chair presented (missing subject).",
+      "- (missing subject).",
     ));
 
   test("empty secretary string", () =>
