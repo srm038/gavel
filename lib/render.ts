@@ -270,5 +270,5 @@ export function renderMotions(motions: any[], indent = ""): string {
       return indent + line;
     })
     .filter(Boolean)
-    .join("\n");
+    .join("\n\n");
 }

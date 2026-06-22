@@ -197,7 +197,7 @@ describe("renderMotions", () => {
     expect(
       renderMotions([enterExec(), mot({ text: "Confidential." }), riseExec()]),
     ).toBe(
-      "**Enter Executive Session** (Chair). **Carried** (*unanimous consent*).\n**Rise from Executive Session** (Chair). **Carried** (*unanimous consent*).",
+      "**Enter Executive Session** (Chair). **Carried** (*unanimous consent*).\n\n**Rise from Executive Session** (Chair). **Carried** (*unanimous consent*).",
     ));
 
   test("exec session with lifted shows motions", () =>
@@ -208,7 +208,7 @@ describe("renderMotions", () => {
         riseExec(),
       ]),
     ).toBe(
-      "**Enter Executive Session** (Chair). **Carried** (*unanimous consent*) *(Seal lifted June 1, 2026)*.\n**Motion** (Chair): Visible. **Carried** (*unanimous consent*).\n**Rise from Executive Session** (Chair). **Carried** (*unanimous consent*).",
+      "**Enter Executive Session** (Chair). **Carried** (*unanimous consent*) *(Seal lifted June 1, 2026)*.\n\n**Motion** (Chair): Visible. **Carried** (*unanimous consent*).\n\n**Rise from Executive Session** (Chair). **Carried** (*unanimous consent*).",
     ));
 
   test("lifted with note", () =>
@@ -290,7 +290,7 @@ describe("renderMotions", () => {
     expect(
       renderMotions([mot({ text: "First." }), mot({ text: "Second." })]),
     ).toBe(
-      "**Motion** (Chair): First. **Carried** (*unanimous consent*).\n**Motion** (Chair): Second. **Carried** (*unanimous consent*).",
+      "**Motion** (Chair): First. **Carried** (*unanimous consent*).\n\n**Motion** (Chair): Second. **Carried** (*unanimous consent*).",
     ));
 
   test("nested exec sessions — both suppressed", () =>
