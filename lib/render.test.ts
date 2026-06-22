@@ -438,7 +438,7 @@ describe("renderDoc", () => {
       }),
     );
     expect(r).toContain("were **Approved as Corrected**.");
-    expect(r).toContain("Corrections: p.3.");
+    expect(r).not.toContain("Corrections:");
     expect(r).toContain("Motion by Chair, *seconded*.");
   });
 

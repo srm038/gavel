@@ -103,7 +103,6 @@ export function renderDoc(m: any): string {
     } else {
       line += ` were **${a.result}**.`;
     }
-    if (a.corrections) line += ` Corrections: ${a.corrections}.`;
     if (a.motion) {
       line += ` Motion by ${a.motion.by}${a.motion.seconded ? ", *seconded*" : ""}.`;
     }
