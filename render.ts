@@ -10,15 +10,14 @@ if (!args.length) {
   process.exit(1);
 }
 
-const files = args
-  .flatMap((arg) =>
-    /[*?[]/.test(arg) ? [...new Bun.Glob(arg).scanSync()] : [arg],
-  )
-  .filter((f) => f.endsWith(".yml"));
+const files = args.flatMap((arg) =>
+  /[*?[]/.test(arg) ? [...new Bun.Glob(arg).scanSync()] : [arg],
+);
 
-// Load and compile JSON Schemas for validation
 const scriptDir = import.meta.dirname;
 const yml = (s: string) => Bun.file(scriptDir + s).text();
+
+// Load and compile JSON Schemas for validation
 const [common, agenda, mins] = await Promise.all([
   yml("/schemas/common.schema.yml"),
   yml("/schemas/agenda.schema.yml"),
@@ -34,7 +33,23 @@ ajv.addSchema(commonSchema);
 const validateAgenda = ajv.compile(agendaSchema);
 const validateMinutes = ajv.compile(minutesSchema);
 
+const md2pdf = (mdFile: string) => {
+  const result = Bun.spawnSync([
+    "bash", scriptDir + "/scripts/md2pdf.sh", mdFile,
+  ]);
+  const pdfFile = mdFile.replace(/\.md$/, ".pdf");
+  console.log(`  → ${mdFile}`);
+  if (result.exitCode === 0) console.log(`  → ${pdfFile}`);
+};
+
 for (const file of files) {
+  if (file.endsWith(".md")) {
+    md2pdf(file);
+    continue;
+  }
+
+  if (!file.endsWith(".yml")) continue;
+
   console.log(`  ${file}`);
   let raw;
   try {
@@ -46,8 +61,6 @@ for (const file of files) {
   const m = parse(raw);
 
   const isAgenda = m.type === "agenda";
-
-  // Validate against schema
   const validate = isAgenda ? validateAgenda : validateMinutes;
   const valid = validate(m);
   if (!valid) {
@@ -57,17 +70,7 @@ for (const file of files) {
     }
   }
 
-  const out = renderDoc(m);
-
   const mdFile = file.replace(/\.yml$/, ".md");
-  await Bun.write(mdFile, out);
-  const scriptDir = import.meta.dirname;
-  const result = Bun.spawnSync([
-    "bash",
-    scriptDir + "/scripts/md2pdf.sh",
-    mdFile,
-  ]);
-  console.log(`  → ${mdFile}`);
-  if (result.exitCode === 0)
-    console.log(`  → ${mdFile.replace(/\.md$/, ".pdf")}`);
+  await Bun.write(mdFile, renderDoc(m));
+  md2pdf(mdFile);
 }

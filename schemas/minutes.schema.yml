@@ -160,30 +160,22 @@ properties:
     type: array
     description: Special orders per RONR §41
     items:
-      oneOf:
+      anyOf:
         - $ref: "#/definitions/business_item"
         - $ref: "#/definitions/motion"
   unfinished_business:
     type: array
     description: Unfinished business and general orders per RONR §41
     items:
-      oneOf:
+      anyOf:
         - $ref: "#/definitions/business_item"
         - $ref: "#/definitions/motion"
   new_business:
     type: array
     description: New business per RONR §41
     items:
-      oneOf:
-        - allOf:
-            - $ref: "#/definitions/business_item"
-            - type: object
-              properties:
-                elections:
-                  type: array
-                  description: Elections held (special case of new business)
-                  items:
-                    $ref: "#/definitions/election"
+      anyOf:
+        - $ref: "#/definitions/business_item"
         - $ref: "#/definitions/motion"
   announcements:
     type: array
@@ -247,7 +239,8 @@ definitions:
 
   business_item:
     type: object
-    description: A business item with optional title, description, and motions
+    additionalProperties: false
+    description: A business item with optional title, description, motions, and elections
     properties:
       title:
         type: string
@@ -259,6 +252,11 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/motion"
+      elections:
+        type: array
+        description: Elections held (special case of new business)
+        items:
+          $ref: "#/definitions/election"
 
   vote:
     type: object

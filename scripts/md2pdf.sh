@@ -4,11 +4,11 @@ set -euo pipefail
 file="${1:?Usage: md2pdf.sh <file.md>}"
 sha=""
 dir=$(dirname "$file")
-gitRoot=$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null)
+gitRoot=$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null) || true
 if [ -n "$gitRoot" ]; then
   src="${file%.md}.yml"
-  [ -f "$src" ] && sha=$(git -C "$gitRoot" log -1 --format=%h -- "$src" 2>/dev/null)
-  [ -z "$sha" ] && sha=$(git -C "$gitRoot" rev-parse --short HEAD 2>/dev/null)
+  [ -f "$src" ] && sha=$(git -C "$gitRoot" log -1 --format=%h -- "$src" 2>/dev/null) || true
+  [ -z "$sha" ] && sha=$(git -C "$gitRoot" rev-parse --short HEAD 2>/dev/null) || true
 fi
 
 args=(

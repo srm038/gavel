@@ -100,7 +100,7 @@ brew bundle
 - **Better CLI** — `--help`, `--strict` (fail on validation), `--output-dir`, `--format md|pdf|both|html`, `--watch`
 - **Agenda→minutes promotion** — Tool to diff, merge, or promote agenda YAML to minutes skeleton after meeting
 - **Parallel processing** — Use `Promise.all()` for batch rendering multiple files
-- **Fold md2pdf into render** — Inline PDF conversion, pipe markdown straight to md2pdf instead of temp file
+- **Fold md2pdf into render** — `render.ts` is single entrypoint: `.yml` → render + PDF, `.md` → PDF only
 
 ## Schemas
 
