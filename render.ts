@@ -38,12 +38,12 @@ const md2pdf = (mdFile: string) => {
     "bash", scriptDir + "/scripts/md2pdf.sh", mdFile,
   ]);
   const pdfFile = mdFile.replace(/\.md$/, ".pdf");
-  console.log(`  → ${mdFile}`);
   if (result.exitCode === 0) console.log(`  → ${pdfFile}`);
 };
 
 for (const file of files) {
   if (file.endsWith(".md")) {
+    console.log(`  ${file}`);
     md2pdf(file);
     continue;
   }
@@ -72,5 +72,6 @@ for (const file of files) {
 
   const mdFile = file.replace(/\.yml$/, ".md");
   await Bun.write(mdFile, renderDoc(m));
+  console.log(`  → ${mdFile}`);
   md2pdf(mdFile);
 }
