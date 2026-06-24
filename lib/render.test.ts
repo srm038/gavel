@@ -553,6 +553,17 @@ describe("renderDoc", () => {
       expect(renderDoc(min({ special_orders: [item] }))).toContain(want));
   }
 
+  for (const section of ["special_orders", "unfinished_business", "new_business"] as const) {
+    test(`${section} bare motion`, () =>
+      expect(
+        renderDoc(
+          min({
+            [section]: [mot({ text: "Do it." })],
+          }),
+        ),
+      ).toContain("**Motion** (Chair): Do it."));
+  }
+
   test("section ordering: reports → special_orders → unfinished → new", () => {
     const r = renderDoc(
       min({

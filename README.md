@@ -91,12 +91,16 @@ brew bundle
 - **Consent agenda** — Support grouping routine items for single-vote approval
 - **Committee of the whole** — Record that assembly went into committee of the whole and the resulting report
 - **Election schema** — Support multiple ballots, runoffs, write-ins, preferential voting, abstentions per candidate, motion-to-close-nominations
+- **Dissent on votes** — Record dissenting opinions per RONR §48:4 (only when ordered by assembly; consider if needed)
+- **Single motion in business sections** — Accept a bare motion in `special_orders`/`unfinished_business`/`new_business` without wrapping in an item object
+- **Parliamentary inquiries** — Record parliamentary inquiries and responses during debate
 
 ### Pipeline
 
 - **Better CLI** — `--help`, `--strict` (fail on validation), `--output-dir`, `--format md|pdf|both|html`, `--watch`
 - **Agenda→minutes promotion** — Tool to diff, merge, or promote agenda YAML to minutes skeleton after meeting
 - **Parallel processing** — Use `Promise.all()` for batch rendering multiple files
+- **Fold md2pdf into render** — Inline PDF conversion, pipe markdown straight to md2pdf instead of temp file
 
 ## Schemas
 

@@ -125,6 +125,7 @@ export function renderDoc(m: any): string {
   }
 
   const renderBusinessItem = (item: any) => {
+    if (item.type) return renderMotions([item], "- ");
     let block = "";
     if (item.title && item.description) {
       block = `- **${item.title}**: ${item.description}`;

@@ -160,58 +160,31 @@ properties:
     type: array
     description: Special orders per RONR §41
     items:
-      type: object
-      additionalProperties: false
-      properties:
-        title:
-          type: string
-          description: Item title
-        description:
-          type: string
-          description: Description of the business
-        motions:
-          type: array
-          items:
-            $ref: "#/definitions/motion"
+      oneOf:
+        - $ref: "#/definitions/business_item"
+        - $ref: "#/definitions/motion"
   unfinished_business:
     type: array
     description: Unfinished business and general orders per RONR §41
     items:
-      type: object
-      additionalProperties: false
-      properties:
-        title:
-          type: string
-          description: Item title
-        description:
-          type: string
-          description: Description of the business
-        motions:
-          type: array
-          items:
-            $ref: "#/definitions/motion"
+      oneOf:
+        - $ref: "#/definitions/business_item"
+        - $ref: "#/definitions/motion"
   new_business:
     type: array
     description: New business per RONR §41
     items:
-      type: object
-      additionalProperties: false
-      properties:
-        title:
-          type: string
-          description: Item title
-        description:
-          type: string
-        motions:
-          type: array
-          description: Motions introduced under this item
-          items:
-            $ref: "#/definitions/motion"
-        elections:
-          type: array
-          description: Elections held (special case of new business)
-          items:
-            $ref: "#/definitions/election"
+      oneOf:
+        - allOf:
+            - $ref: "#/definitions/business_item"
+            - type: object
+              properties:
+                elections:
+                  type: array
+                  description: Elections held (special case of new business)
+                  items:
+                    $ref: "#/definitions/election"
+        - $ref: "#/definitions/motion"
   announcements:
     type: array
     description: Announcements or program
@@ -271,6 +244,21 @@ definitions:
       - type: object
         required:
           - by
+
+  business_item:
+    type: object
+    description: A business item with optional title, description, and motions
+    properties:
+      title:
+        type: string
+        description: Item title
+      description:
+        type: string
+        description: Description of the business
+      motions:
+        type: array
+        items:
+          $ref: "#/definitions/motion"
 
   vote:
     type: object
