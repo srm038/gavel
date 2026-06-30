@@ -1,16 +1,24 @@
 #!/usr/bin/env bun
 import { renderDoc } from "./lib/render.ts";
+import { watch } from "node:fs";
+import path from "node:path";
 const { parse } = await import("yaml");
 const Ajv = (await import("ajv")).default;
 const addFormats = (await import("ajv-formats")).default;
 
 const args = process.argv.slice(2);
-if (!args.length) {
-  console.error("Usage: bun render.ts <file|glob>...");
+const watchMode = args.includes("--watch") || args.includes("-w");
+const fileArgs = args.filter((a) => a !== "--watch" && a !== "-w");
+
+if (!fileArgs.length) {
+  console.error(
+    `Usage: bun render.ts [--watch] <file|glob>...\n\n` +
+      `  --watch  Re-render files on change`,
+  );
   process.exit(1);
 }
 
-const files = args.flatMap((arg) =>
+const files = fileArgs.flatMap((arg) =>
   /[*?[]/.test(arg) ? [...new Bun.Glob(arg).scanSync()] : [arg],
 );
 
@@ -41,14 +49,14 @@ const md2pdf = (mdFile: string) => {
   if (result.exitCode === 0) console.log(`  → ${pdfFile}`);
 };
 
-for (const file of files) {
+async function processFile(file: string) {
   if (file.endsWith(".md")) {
     console.log(`  ${file}`);
     md2pdf(file);
-    continue;
+    return;
   }
 
-  if (!file.endsWith(".yml")) continue;
+  if (!file.endsWith(".yml")) return;
 
   console.log(`  ${file}`);
   let raw;
@@ -56,7 +64,7 @@ for (const file of files) {
     raw = await Bun.file(file).text();
   } catch (e) {
     console.error(`  ✗ ${file}: ${e}`);
-    continue;
+    return;
   }
   const m = parse(raw);
 
@@ -74,4 +82,30 @@ for (const file of files) {
   await Bun.write(mdFile, renderDoc(m));
   console.log(`  → ${mdFile}`);
   md2pdf(mdFile);
+}
+
+for (const file of files) {
+  await processFile(file);
+}
+
+if (watchMode) {
+  const watchedDirs = new Set<string>();
+  const fileSet = new Set(files.map((f) => path.resolve(f)));
+
+  for (const file of files) {
+    const dir = path.dirname(path.resolve(file));
+    if (watchedDirs.has(dir)) continue;
+    watchedDirs.add(dir);
+    watch(dir, (event, filename) => {
+      if (!filename) return;
+      const full = path.resolve(dir, filename);
+      if (fileSet.has(full)) {
+        console.log(`\n[change] ${filename}`);
+        processFile(full);
+      }
+    });
+  }
+
+  console.log(`\nWatching ${files.length} file(s) for changes...`);
+  await new Promise(() => {});
 }
