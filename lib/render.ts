@@ -103,7 +103,6 @@ export function renderDoc(m: any): string {
     } else {
       line += ` were **${a.result}**.`;
     }
-    if (a.corrections) line += ` Corrections: ${a.corrections}.`;
     if (a.motion) {
       line += ` Motion by ${a.motion.by}${a.motion.seconded ? ", *seconded*" : ""}.`;
     }
@@ -175,6 +174,7 @@ export function renderDoc(m: any): string {
     if (hasRecess) motions.push(m.recess.motion);
     if (hasAdj) motions.push(m.adjournment.motion);
     if (motions.length || hasCeremonies) {
+      md("\\bigskip");
       let block = "";
       if (motions.length) block += renderMotions(motions);
       if (hasCeremonies) {
