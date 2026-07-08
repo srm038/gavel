@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
+import path from "node:path";
 import { renderDoc } from "./lib/render.ts";
 import { watch } from "node:fs";
-import path from "node:path";
 const { parse } = await import("yaml");
 const Ajv = (await import("ajv")).default;
 const addFormats = (await import("ajv-formats")).default;
@@ -41,12 +41,12 @@ ajv.addSchema(commonSchema);
 const validateAgenda = ajv.compile(agendaSchema);
 const validateMinutes = ajv.compile(minutesSchema);
 
-const md2pdf = (mdFile: string) => {
+const md2pdf = (mdFile: string, pdfFile?: string) => {
+  const pdf = pdfFile || mdFile.replace(/\.md$/, ".pdf");
   const result = Bun.spawnSync([
-    "bash", scriptDir + "/scripts/md2pdf.sh", mdFile,
+    "bash", scriptDir + "/scripts/md2pdf.sh", mdFile, pdf,
   ]);
-  const pdfFile = mdFile.replace(/\.md$/, ".pdf");
-  if (result.exitCode === 0) console.log(`  → ${pdfFile}`);
+  if (result.exitCode === 0) console.log(`  → ${pdf}`);
 };
 
 async function processFile(file: string) {
@@ -79,9 +79,11 @@ async function processFile(file: string) {
   }
 
   const mdFile = file.replace(/\.yml$/, ".md");
+  const friendly = `${m.date} ${m.title} ${isAgenda ? "Agenda" : "Minutes"}.pdf`;
+  const pdfFile = path.join(path.dirname(file), friendly);
   await Bun.write(mdFile, renderDoc(m));
   console.log(`  → ${mdFile}`);
-  md2pdf(mdFile);
+  md2pdf(mdFile, pdfFile);
 }
 
 for (const file of files) {

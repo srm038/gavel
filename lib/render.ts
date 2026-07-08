@@ -226,6 +226,7 @@ export function renderMotions(motions: any[], indent = ""): string {
       if (text === mot.type) {
         line = `${header}.`;
       } else {
+        text = text.trimEnd();
         if (!text.endsWith(".")) text += ".";
         line = `${header}: ${text}`;
       }
