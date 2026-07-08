@@ -103,6 +103,7 @@ export function renderDoc(m: any): string {
     } else {
       line += ` were **${a.result}**.`;
     }
+    if (a.corrections) line += ` Corrections: ${a.corrections}.`;
     if (a.motion) {
       line += ` Motion by ${a.motion.by}${a.motion.seconded ? ", *seconded*" : ""}.`;
     }
@@ -125,7 +126,7 @@ export function renderDoc(m: any): string {
   }
 
   const renderBusinessItem = (item: any) => {
-    if (item.type) return renderMotions([item], "- ");
+    if (item.type || item.by) return renderMotions([item], "- ");
     let block = "";
     if (item.title && item.description) {
       block = `- **${item.title}**: ${item.description}`;
