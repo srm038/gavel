@@ -245,7 +245,9 @@ describe("renderMotions", () => {
           ],
         }),
       ]),
-    ).toContain("**Refer**"));
+    ).toBe(
+      `**Motion** (Chair): Do it. **Carried** (*unanimous consent*).\n\n  **Refer** (Member B): To committee. **Carried** (*unanimous consent*).`,
+    ));
 
   test("amend secondary excluded", () =>
     expect(
