@@ -268,7 +268,7 @@ export function renderMotions(motions: any[], indent = ""): string {
         (s: any) => s.vote?.result === "Carried" && s.type !== "Amend",
       );
       if (recordable?.length) {
-        line += `\n\n${renderMotions(recordable, indent.includes("- ") ? indent.replace("- ", "  - ") : indent + "  ")}`;
+        line += `\n\n${renderMotions(recordable, indent.replace(/^- /, "") + "  ")}`;
       }
       return indent + line;
     })
