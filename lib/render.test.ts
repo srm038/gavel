@@ -249,6 +249,27 @@ describe("renderMotions", () => {
       `**Motion** (Chair): Do it. **Carried** (*unanimous consent*).\n\n  **Refer** (Member B): To committee. **Carried** (*unanimous consent*).`,
     ));
 
+  test("secondary nested under bullet indent", () =>
+    expect(
+      renderMotions(
+        [
+          mot({
+            secondary: [
+              {
+                type: "Refer",
+                text: "To committee.",
+                by: "Member B",
+                vote: carried(),
+              },
+            ],
+          }),
+        ],
+        "- ",
+      ),
+    ).toBe(
+      `- **Motion** (Chair): Do it. **Carried** (*unanimous consent*).\n\n  - **Refer** (Member B): To committee. **Carried** (*unanimous consent*).`,
+    ));
+
   test("amend secondary excluded", () =>
     expect(
       renderMotions([
