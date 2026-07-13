@@ -82,8 +82,7 @@ async function processFile(file: string) {
   }
 
   const mdFile = file.replace(/\.yml$/, ".md");
-  const friendly = file.replace(/\.yml$/, ".pdf");
-  const pdfFile = path.join(path.dirname(file), friendly);
+  const pdfFile = file.replace(/\.yml$/, ".pdf");
   await Bun.write(mdFile, renderDoc(m));
   console.log(`  → ${mdFile}`);
   md2pdf(mdFile, pdfFile);
