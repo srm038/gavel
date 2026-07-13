@@ -289,7 +289,7 @@ describe("renderMotions", () => {
         "- ",
       ),
     ).toBe(
-      `- **Motion** (Chair): To adopt.\n\n  > The text. **Carried** (*unanimous consent*).\n\n    **Refer** (Member B): To committee. **Carried** (*unanimous consent*).`,
+      `- **Motion** (Chair): To adopt.\n\n  > The text. **Carried** (*unanimous consent*).\n\n  **Refer** (Member B): To committee. **Carried** (*unanimous consent*).`,
     ));
 
   test("amend secondary excluded", () =>

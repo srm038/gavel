@@ -231,12 +231,19 @@ export function renderMotions(motions: any[], indent = ""): string {
         if (!text.endsWith(".")) text += ".";
         if (indent && text.includes("\n")) {
           const lines = text.split("\n");
+          const spaceIndent = indent.replace(/^- /, "  ");
           text =
             lines[0] +
             "\n" +
             lines
               .slice(1)
-              .map((l: string) => (l.trim() ? indent + l : l))
+              .map((l: string) =>
+                l.trim()
+                  ? l.trimStart().startsWith(">")
+                    ? spaceIndent + l
+                    : indent + l
+                  : l,
+              )
               .join("\n");
         }
         line = `${header}: ${text}`;
