@@ -44,7 +44,10 @@ const validateMinutes = ajv.compile(minutesSchema);
 const md2pdf = (mdFile: string, pdfFile?: string) => {
   const pdf = pdfFile || mdFile.replace(/\.md$/, ".pdf");
   const result = Bun.spawnSync([
-    "bash", scriptDir + "/scripts/md2pdf.sh", mdFile, pdf,
+    "bash",
+    scriptDir + "/scripts/md2pdf.sh",
+    mdFile,
+    pdf,
   ]);
   if (result.exitCode === 0) console.log(`  → ${pdf}`);
 };
@@ -79,7 +82,7 @@ async function processFile(file: string) {
   }
 
   const mdFile = file.replace(/\.yml$/, ".md");
-  const friendly = `${m.date} ${m.title} ${isAgenda ? "Agenda" : "Minutes"}.pdf`;
+  const friendly = file.replace(/\.yml$/, ".pdf");
   const pdfFile = path.join(path.dirname(file), friendly);
   await Bun.write(mdFile, renderDoc(m));
   console.log(`  → ${mdFile}`);

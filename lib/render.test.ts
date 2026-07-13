@@ -270,6 +270,28 @@ describe("renderMotions", () => {
       `- **Motion** (Chair): Do it. **Carried** (*unanimous consent*).\n\n  **Refer** (Member B): To committee. **Carried** (*unanimous consent*).`,
     ));
 
+  test("secondary nested under bullet with blockquote keeps bullet", () =>
+    expect(
+      renderMotions(
+        [
+          mot({
+            text: "To adopt.\n\n> The text.",
+            secondary: [
+              {
+                type: "Refer",
+                text: "To committee.",
+                by: "Member B",
+                vote: carried(),
+              },
+            ],
+          }),
+        ],
+        "- ",
+      ),
+    ).toBe(
+      `- **Motion** (Chair): To adopt.\n\n  > The text. **Carried** (*unanimous consent*).\n\n    **Refer** (Member B): To committee. **Carried** (*unanimous consent*).`,
+    ));
+
   test("amend secondary excluded", () =>
     expect(
       renderMotions([

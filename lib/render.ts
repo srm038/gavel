@@ -229,6 +229,16 @@ export function renderMotions(motions: any[], indent = ""): string {
       } else {
         text = text.trimEnd();
         if (!text.endsWith(".")) text += ".";
+        if (indent && text.includes("\n")) {
+          const lines = text.split("\n");
+          text =
+            lines[0] +
+            "\n" +
+            lines
+              .slice(1)
+              .map((l: string) => (l.trim() ? indent + l : l))
+              .join("\n");
+        }
         line = `${header}: ${text}`;
       }
 
