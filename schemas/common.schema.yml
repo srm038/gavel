@@ -65,7 +65,7 @@ definitions:
         default: Motion
         description: Specific RONR motion name in order of precedence
         enum:
-          - Fix the Time to Adjourn
+          - Fix the Time to Which to Adjourn
           - Adjourn
           - Take a Recess
           - Raise a Question of Privilege
@@ -75,7 +75,6 @@ definitions:
           - Limit or Extend Debate
           - Postpone to a Certain Time
           - Commit
-          - Refer
           - Amend
           - Postpone Indefinitely
           - Motion
@@ -84,16 +83,21 @@ definitions:
           - Take from the Table
           - Reconsider
           - Rescind
+          - Discharge a Committee
           - Point of Order
           - Appeal
           - Suspend the Rules
-          - Division of Assembly
           - Division of the Question
-          - Object to Consideration of a Question
+          - Consideration by Paragraph
+          - Division of the Assembly
+          - Objection to the Consideration of a Question
           - Parliamentary Inquiry
           - Request for Information
           - Request to Withdraw a Motion
+          - Request to Read Papers
           - Request to be Excused from a Duty
+          - Motions Relating to Methods of Voting and the Polls
+          - Motions Relating to Nominations
       text:
         type: string
         description: Exact wording of the motion

@@ -163,10 +163,10 @@ describe("renderMotions", () => {
     expect(
       renderMotions([
         mot({
-          vote: carried({ method: "show_of_hands", yes: 8, no: 2, abstain: 0 }),
+          vote: carried({ method: "Show of Hands", yes: 8, no: 2, abstain: 0 }),
         }),
       ]),
-    ).toBe("**Motion** (Chair): Do it. **Carried** (*show_of_hands*, 8/2/0)."));
+    ).toBe("**Motion** (Chair): Do it. **Carried** (*show of hands*, 8/2/0)."));
 
   test("vote member roll call", () =>
     expect(
@@ -175,8 +175,8 @@ describe("renderMotions", () => {
           vote: carried({
             method: "Roll Call",
             members: [
-              { name: "Member A", vote: "Yea" },
-              { name: "Member B", vote: "Nay" },
+              { name: "Member A", vote: "yes" },
+              { name: "Member B", vote: "no" },
             ],
           }),
         }),
