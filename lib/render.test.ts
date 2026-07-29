@@ -134,6 +134,13 @@ describe("renderMotions", () => {
       "**Motion** (Chair): New. **Carried** (*unanimous consent*).",
     ));
 
+  test("notice date", () =>
+    expect(
+      renderMotions([mot({ notice_date: "2025-08-01" })]),
+    ).toBe(
+      "**Motion** (Chair): Do it. **Carried** (*unanimous consent*) *(Previous notice: August 1, 2025)*.",
+    ));
+
   test("procedural — text===type", () =>
     expect(
       renderMotions([{ type: "Adjourn", by: "Chair", vote: carried() }]),

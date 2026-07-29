@@ -32,6 +32,8 @@ definitions:
           - Regular
           - Special
           - Annual
+          - Adjourned Regular
+          - Adjourned Special
           - Adjourned
           - Executive Session
         description: Type of meeting per RONR
@@ -107,6 +109,10 @@ definitions:
       seconded:
         type: boolean
         description: Whether the motion was seconded
+      notice_date:
+        type: string
+        format: date
+        description: Date previous notice of this motion was given (per RONR §10, §48:4(9))
 
   minutes_approval:
     type: object

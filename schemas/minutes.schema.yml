@@ -374,6 +374,8 @@ definitions:
           not:
             anyOf:
               - required:
+                  - abstain
+              - required:
                   - members
               - required:
                   - results

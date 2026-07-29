@@ -268,6 +268,10 @@ export function renderMotions(motions: any[], indent = ""): string {
         line += ")";
       }
 
+      if (mot.notice_date) {
+        line += ` *(Previous notice: ${fmtDate(mot.notice_date)})*`;
+      }
+
       if (mot.lifted) {
         const d = fmtDate(mot.lifted.date);
         line += ` *(Seal lifted ${d}${mot.lifted.note ? `: ${mot.lifted.note}` : ""})*`;
