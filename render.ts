@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 import path from "node:path";
-import { renderDoc } from "./lib/render.ts";
+import { renderDoc, renderCommittee } from "./lib/render.ts";
 import { watch } from "node:fs";
 const { parse } = await import("yaml");
 const Ajv = (await import("ajv")).default;
@@ -26,20 +26,23 @@ const scriptDir = import.meta.dirname;
 const yml = (s: string) => Bun.file(scriptDir + s).text();
 
 // Load and compile JSON Schemas for validation
-const [common, agenda, mins] = await Promise.all([
+const [common, agenda, mins, cmte] = await Promise.all([
   yml("/schemas/common.schema.yml"),
   yml("/schemas/agenda.schema.yml"),
   yml("/schemas/minutes.schema.yml"),
+  yml("/schemas/committee.schema.yml"),
 ]);
 const commonSchema = parse(common);
 const agendaSchema = parse(agenda);
 const minutesSchema = parse(mins);
+const committeeSchema = parse(cmte);
 
 const ajv = new Ajv({ strict: false, allErrors: true });
 addFormats(ajv);
 ajv.addSchema(commonSchema);
 const validateAgenda = ajv.compile(agendaSchema);
 const validateMinutes = ajv.compile(minutesSchema);
+const validateCommittee = ajv.compile(committeeSchema);
 
 const md2pdf = (mdFile: string, pdfFile?: string) => {
   const pdf = pdfFile || mdFile.replace(/\.md$/, ".pdf");
@@ -70,6 +73,22 @@ async function processFile(file: string) {
     return;
   }
   const m = parse(raw);
+
+  if (m.type === "committee") {
+    const valid = validateCommittee(m);
+    if (!valid) {
+      console.error(`  ⚠ Validation errors:`);
+      for (const err of validateCommittee.errors ?? []) {
+        console.error(`    - ${err.instancePath || "/"}: ${err.message}`);
+      }
+    }
+    const mdFile = file.replace(/\.yml$/, ".md");
+    const pdfFile = file.replace(/\.yml$/, ".pdf");
+    await Bun.write(mdFile, renderCommittee(m));
+    console.log(`  → ${mdFile}`);
+    md2pdf(mdFile, pdfFile);
+    return;
+  }
 
   const isAgenda = m.type === "agenda";
   const validate = isAgenda ? validateAgenda : validateMinutes;

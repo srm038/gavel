@@ -3,6 +3,7 @@ import {
   fmtDate,
   fmtTime,
   renderCeremony,
+  renderCommittee,
   renderDoc,
   renderMotions,
   sortByName,
@@ -676,4 +677,37 @@ describe("renderDoc", () => {
       r.indexOf("New Business"),
     );
   });
+});
+
+// ---------------------------------------------------------------------------
+// renderCommittee
+// ---------------------------------------------------------------------------
+describe("renderCommittee", () => {
+  test("empty actions", () =>
+    expect(renderCommittee({ title: "Missions", actions: [] })).toBe(
+      "# Missions\n\n## Actions\n\n",
+    ));
+
+  test("single action", () =>
+    expect(
+      renderCommittee({
+        title: "Missions",
+        actions: [{ date: "2026-01-15", description: "Approved the budget." }],
+      }),
+    ).toBe(
+      "# Missions\n\n## Actions\n\n`2026-01-15`\n:   Approved the budget.\n\n",
+    ));
+
+  test("multiple actions sorted by date", () =>
+    expect(
+      renderCommittee({
+        title: "Benevolence",
+        actions: [
+          { date: "2026-03-10", description: "Approved contractor bid." },
+          { date: "2026-01-15", description: "Mr. X was appointed chair." },
+        ],
+      }),
+    ).toBe(
+      "# Benevolence\n\n## Actions\n\n`2026-01-15`\n:   Mr. X was appointed chair.\n\n`2026-03-10`\n:   Approved contractor bid.\n\n",
+    ));
 });

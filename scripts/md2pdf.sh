@@ -24,6 +24,8 @@ header=$(mktemp)
 cat > "$header" <<-HEADER
 \usepackage{fancyhdr}
 \usepackage{xcolor}
+\usepackage{enumitem}
+\setlist[description]{leftmargin=80pt,labelindent=0pt,style=nextline}
 \renewenvironment{quote}
   {\list{}{\rightmargin\leftmargin}\item\relax\itshape\small}
   {\endlist}

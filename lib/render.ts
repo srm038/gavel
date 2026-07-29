@@ -35,6 +35,22 @@ export const fmtDate = (s: string) => {
   );
 };
 
+export function renderCommittee(m: any): string {
+  let out = "";
+  const md = (s: string) => { out += s + "\n\n"; };
+  md(`# ${m.title}`);
+  md("## Actions");
+  if (m.actions?.length) {
+    const sorted = [...m.actions].sort((a: any, b: any) =>
+      a.date.localeCompare(b.date),
+    );
+    for (const a of sorted) {
+      out += `\`${a.date}\`\n:   ${a.description}\n\n`;
+    }
+  }
+  return out;
+}
+
 export function renderDoc(m: any): string {
   const isAgenda = m.type === "agenda";
   let out = "";

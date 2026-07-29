@@ -1,0 +1,31 @@
+$schema: http://json-schema.org/draft-07/schema#
+$id: committee.schema.yml
+title: RONR Committee Actions
+description: Record of actions taken by a committee per RONR §50
+type: object
+required:
+  - title
+  - type
+  - actions
+properties:
+  type:
+    const: committee
+  title:
+    type: string
+    description: Name of the committee
+  actions:
+    type: array
+    description: Actions taken and membership changes
+    items:
+      type: object
+      required:
+        - date
+        - description
+      properties:
+        date:
+          type: string
+          format: date
+          description: Date of the action (YYYY-MM-DD)
+        description:
+          type: string
+          description: Description of the action or membership change
