@@ -272,6 +272,10 @@ export function renderMotions(motions: any[], indent = ""): string {
         line += ` *(Previous notice: ${fmtDate(mot.notice_date)})*`;
       }
 
+      if (mot.ruling && (mot.type === "Point of Order" || mot.type === "Appeal")) {
+        line += ` *Ruling: ${mot.ruling}*`;
+      }
+
       if (mot.lifted) {
         const d = fmtDate(mot.lifted.date);
         line += ` *(Seal lifted ${d}${mot.lifted.note ? `: ${mot.lifted.note}` : ""})*`;

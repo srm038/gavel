@@ -113,6 +113,9 @@ definitions:
         type: string
         format: date
         description: Date previous notice of this motion was given (per RONR §10, §48:4(9))
+      ruling:
+        type: string
+        description: Chair's ruling reason (required for Point of Order and Appeal per RONR §48:4(10))
 
   minutes_approval:
     type: object
