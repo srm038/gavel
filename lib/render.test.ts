@@ -609,17 +609,19 @@ describe("renderDoc", () => {
       ).toContain("**Motion** (Chair): Do it."));
   }
 
-  test("section ordering: reports → special_orders → unfinished → new", () => {
+  test("section ordering: reports → special → general → unfinished → new", () => {
     const r = renderDoc(
       min({
         reports: [{ subject: "R", by: "A" }],
         special_orders: [{ description: "SO" }],
+        general_orders: [{ description: "GO" }],
         unfinished_business: [{ description: "UB" }],
         new_business: [{ description: "NB" }],
       }),
     );
     expect(r.indexOf("Reports")).toBeLessThan(r.indexOf("Special Orders"));
-    expect(r.indexOf("Special Orders")).toBeLessThan(
+    expect(r.indexOf("Special Orders")).toBeLessThan(r.indexOf("General Orders"));
+    expect(r.indexOf("General Orders")).toBeLessThan(
       r.indexOf("Unfinished Business"),
     );
     expect(r.indexOf("Unfinished Business")).toBeLessThan(

@@ -74,6 +74,25 @@ properties:
           items:
             $ref: common.schema.yml#/definitions/motion
 
+  general_orders:
+    type: array
+    description: General orders (questions postponed to this meeting per RONR §41)
+    items:
+      type: object
+      additionalProperties: false
+      properties:
+        title:
+          type: string
+          description: Item title
+        description:
+          type: string
+          description: Description of the business
+        motions:
+          type: array
+          description: Expected motions
+          items:
+            $ref: common.schema.yml#/definitions/motion
+
   unfinished_business:
     type: array
     description: Unfinished business from previous meeting

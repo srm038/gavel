@@ -163,9 +163,16 @@ properties:
       anyOf:
         - $ref: "#/definitions/business_item"
         - $ref: "#/definitions/motion"
+  general_orders:
+    type: array
+    description: General orders (questions postponed to this meeting per RONR §41)
+    items:
+      anyOf:
+        - $ref: "#/definitions/business_item"
+        - $ref: "#/definitions/motion"
   unfinished_business:
     type: array
-    description: Unfinished business and general orders per RONR §41
+    description: Unfinished business per RONR §41
     items:
       anyOf:
         - $ref: "#/definitions/business_item"

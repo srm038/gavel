@@ -147,6 +147,7 @@ export function renderDoc(m: any): string {
 
   const businessSections = [
     ["## Special Orders", m.special_orders],
+    ["## General Orders", m.general_orders],
     ["## Unfinished Business", m.unfinished_business],
     ["## New Business", m.new_business],
   ] as const;
