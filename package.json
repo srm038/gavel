@@ -16,8 +16,10 @@
     "scripts/md2pdf.sh",
     "scripts/postinstall.sh",
     "scripts/install-tex.sh",
+    "config/helix-languages.toml",
     "schemas/common.schema.yml",
     "schemas/agenda.schema.yml",
+    "schemas/committee.schema.yml",
     "schemas/minutes.schema.yml",
     "Brewfile",
     "!.gitignore"
