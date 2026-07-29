@@ -54,6 +54,8 @@ properties:
           items:
             type: string
           description: Attached documents
+        actions:
+          $ref: common.schema.yml#/definitions/report_actions
 
   special_orders:
     type: array

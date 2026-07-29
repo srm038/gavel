@@ -572,6 +572,47 @@ describe("renderDoc", () => {
       ),
     ).toContain("- **the Financial Report** (Mr. X): Here's the details."));
 
+  test("report with actions", () =>
+    expect(
+      renderDoc(
+        min({
+          reports: [
+            {
+              subject: "the Building Committee",
+              by: "Mr. Y",
+              actions: [
+                "Approved the contractor bid",
+                "Scheduled site visit for next week",
+              ],
+            },
+          ],
+        }),
+      ),
+    ).toContain(
+      "- **the Building Committee** (Mr. Y)\n  - Approved the contractor bid.\n  - Scheduled site visit for next week.",
+    ));
+
+  test("report with content and actions and motions", () =>
+    expect(
+      renderDoc(
+        min({
+          reports: [
+            {
+              subject: "the Finance Committee",
+              by: "Ms. Z",
+              content: "Reviewed Q2 budget",
+              actions: ["Forwarded to board for approval"],
+              motions: [
+                { type: "Motion", text: "Approve the budget.", by: "Ms. Z", vote: { result: "Carried" } },
+              ],
+            },
+          ],
+        }),
+      ),
+    ).toContain(
+      "- **the Finance Committee** (Ms. Z): Reviewed Q2 budget.\n  - Forwarded to board for approval.",
+    ));
+
   test("empty secretary string", () =>
     expect(renderDoc(min({ attestation: { secretary: "" } }))).toContain(
       "**Minutes prepared by:** ",

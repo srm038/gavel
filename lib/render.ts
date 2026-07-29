@@ -119,7 +119,17 @@ export function renderDoc(m: any): string {
         if (!c.endsWith(".")) c += ".";
         block += `: ${c}`;
       }
-      if (r.motions?.length) block += `\n\n${renderMotions(r.motions, "    ")}`;
+      if (r.actions?.length) {
+        for (const a of r.actions) {
+          let aText = a;
+          if (!aText.endsWith(".")) aText += ".";
+          block += `\n  - ${aText}`;
+        }
+      }
+      if (r.motions?.length) {
+        const motionIndent = r.actions?.length ? "  " : "    ";
+        block += `\n\n${renderMotions(r.motions, motionIndent)}`;
+      }
       md(block);
     }
   }

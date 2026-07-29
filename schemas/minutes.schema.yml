@@ -147,10 +147,7 @@ properties:
             type: string
           description: Attached documents or references
         actions:
-          type: array
-          description: Informational items or decisions (non-motion)
-          items:
-            type: string
+          $ref: common.schema.yml#/definitions/report_actions
         motions:
           type: array
           description: Motions arising from this report

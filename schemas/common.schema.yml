@@ -58,6 +58,12 @@ definitions:
         type: string
         description: Notes about the ceremony
 
+  report_actions:
+    type: array
+    description: Informational items or decisions (non-motion) — e.g., actions taken by a committee within its authority
+    items:
+      type: string
+
   motion:
     type: object
     description: A motion without results (pre-meeting or placeholder)
