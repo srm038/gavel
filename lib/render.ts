@@ -151,24 +151,22 @@ export function renderDoc(m: any): string {
   }
 
   const renderBusinessItem = (item: any) => {
-    if (item.type || item.by) return renderMotions([item], "- ");
-    let block = "";
-    if (item.title && item.description) {
-      block = `- **${item.title}**: ${item.description}`;
+    if (item.title || item.description) {
+      let block = "";
+      if (item.title && item.description) {
+        block = `- **${item.title}**: ${item.description}`;
+      } else if (item.title) {
+        block = `- **${item.title}**`;
+      } else {
+        block = `- ${item.description}`;
+      }
       if (item.motions?.length)
         block += `\n\n${renderMotions(item.motions, "    ")}`;
-    } else if (item.description) {
-      block = `- ${item.description}`;
-      if (item.motions?.length)
-        block += `\n\n${renderMotions(item.motions, "    ")}`;
-    } else if (item.title) {
-      block = `- **${item.title}**`;
-      if (item.motions?.length)
-        block += `\n\n${renderMotions(item.motions, "    ")}`;
-    } else if (item.motions?.length) {
-      block = renderMotions(item.motions, "- ");
+      return block;
     }
-    return block;
+    if (item.type || item.by) return renderMotions([item], "- ");
+    if (item.motions?.length) return renderMotions(item.motions, "- ");
+    return "";
   };
 
   const businessSections = [
