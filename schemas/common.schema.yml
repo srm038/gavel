@@ -73,7 +73,7 @@ definitions:
         default: Motion
         description: Specific RONR motion name in order of precedence
         enum:
-          - Fix the Time to Which to Adjourn
+          - Fix Adjournment Time
           - Adjourn
           - Take a Recess
           - Raise a Question of Privilege
@@ -99,14 +99,14 @@ definitions:
           - Division of the Question
           - Consideration by Paragraph
           - Division of the Assembly
-          - Objection to the Consideration of a Question
+          - Objection to Consideration
           - Parliamentary Inquiry
           - Request for Information
           - Request to Withdraw a Motion
           - Request to Read Papers
-          - Request to be Excused from a Duty
-          - Motions Relating to Methods of Voting and the Polls
-          - Motions Relating to Nominations
+          - Request to Be Excused
+          - Methods of Voting
+          - Nominations
       text:
         type: string
         description: Exact wording of the motion
