@@ -276,6 +276,7 @@ definitions:
           - Counted Division
           - Roll Call
           - Ballot
+          - Electronic
           - Unanimous Consent
         default: Unanimous Consent
         description: Method of voting
@@ -413,6 +414,22 @@ definitions:
                   - abstain
               - required:
                   - members
+      - if:
+          required: [method]
+          properties:
+            method:
+              const: Electronic
+        then:
+          required:
+            - result
+            - yes
+            - no
+          not:
+            anyOf:
+              - required:
+                  - members
+              - required:
+                  - results
 
   motion:
     allOf:

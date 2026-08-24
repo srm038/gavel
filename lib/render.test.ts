@@ -323,6 +323,13 @@ describe("renderMotions", () => {
       renderMotions([mot({ vote: carried({ method: "Counted Division", yes: 8, no: 2 }) })]),
     ).toBe("**Motion** (Chair): Do it. **Carried** (*counted division*, 8/2/0)."));
 
+  test("electronic vote with counts", () =>
+    expect(
+      renderMotions([
+        mot({ vote: carried({ method: "Electronic", yes: 8, no: 2, abstain: 1 }) }),
+      ]),
+    ).toBe("**Motion** (Chair): Do it. **Carried** (*electronic*, 8/2/1)."));
+
   test("secondary vote not Carried — excluded", () =>
     expect(
       renderMotions([
