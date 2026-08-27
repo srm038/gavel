@@ -66,11 +66,8 @@ export function renderDoc(m: any): string {
 
   if (m.roll_call) {
     if (m.roll_call.officers?.length) {
-      const sorted = [...m.roll_call.officers].sort((a: any, b: any) =>
-        sortByName(a.name, b.name),
-      );
       md(
-        `**Officers:** ${sorted.map((o: any) => `${o.name} (${o.office})`).join(", ")}`,
+        `**Officers:** ${m.roll_call.officers.map((o: any) => `${o.name} (${o.office})`).join(", ")}`,
       );
     }
     if (m.roll_call.members?.length) {

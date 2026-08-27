@@ -456,6 +456,21 @@ describe("renderDoc", () => {
     expect(r).toContain("A quorum was not present.");
   });
 
+  test("officers preserve written order", () => {
+    const r = renderDoc(
+      min({
+        roll_call: {
+          officers: [
+            { name: "Zoe Zeta", office: "Treasurer" },
+            { name: "Amy Alpha", office: "Chair" },
+            { name: "Mia Mu", office: "Secretary" },
+          ],
+        },
+      }),
+    );
+    expect(r).toContain("**Officers:** Zoe Zeta (Treasurer), Amy Alpha (Chair), Mia Mu (Secretary)");
+  });
+
   test("no attestation", () => {
     const r = renderDoc(min());
     expect(r).not.toContain("Minutes prepared by");
